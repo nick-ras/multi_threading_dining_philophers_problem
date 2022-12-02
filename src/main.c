@@ -8,9 +8,8 @@
 // pthread_detach, pthread_join, pthread_mutex_init,
 // pthread_mutex_destroy, p
 //gcc -pthread main.c
-#include "../philo.h"
-
 // int	main(int argc, char **argv);
+#include "../philo.h"
 
 int	init_mutex(t_data *data)
 {
@@ -53,7 +52,7 @@ void	*routine(void *data)
 	new_data = (t_data *)data;
 	pthread_mutex_lock(&new_data->mutex_var[0]);
 	printf("in routine\n");
-	sleep(1);
+	sleep(0.1);
 	pthread_mutex_unlock(&new_data->mutex_var[0]);
 	return (data);
 }
@@ -65,6 +64,14 @@ int destroy_mutexes(t_data *data)
 	i = 0;
 	while (i < data->philo_count)
 		pthread_mutex_destroy(&data->mutex_var[i++]);
+	return (0);
+}
+
+int	free_stuff(t_data *data)
+{
+	free(data->threads);
+	free(data->mutex_var);
+	free(data);
 	return (0);
 }
 
@@ -94,7 +101,7 @@ int	main(int argc, char **argv)
 		pthread_join(data->threads[i++], NULL);
 	if (destroy_mutexes(data))
 		return (1);
-
+	free_stuff(data);
  //how should i manage 
 	return (0);
 }
