@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2022/12/02 20:32:04 by nick             ###   ########.fr       */
+/*   Updated: 2022/12/02 21:58:54 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 
 typedef struct s_data
 {
-	pthread_mutex_t mutex_var;
+	pthread_mutex_t *mutex_var;
+	pthread_t	*threads;
 	int	philo_count;
 	int	time_to_die;
 	int	time_to_eat;

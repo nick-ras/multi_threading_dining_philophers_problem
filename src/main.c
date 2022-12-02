@@ -10,9 +10,21 @@
 //gcc -pthread main.c
 #include "../philo.h"
 
-
 // int	main(int argc, char **argv);
-int	initialize_data(t_data *data, char **argv)
+
+int	init_mutex(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	if (!(data->mutex_var = calloc(data->philo_count, sizeof(pthread_mutex_t))))
+		return (1);
+	while (i < data->philo_count)
+		pthread_mutex_init(&data->mutex_var[i++], NULL);
+	return (0);
+}
+
+int	init_data(t_data *data, char **argv)
 {
 	//check is nb == 0
 	if (ft_strncmp(argv[1], "0", 1) == 0 && ft_strlen(argv[1]) == 1)
@@ -20,7 +32,7 @@ int	initialize_data(t_data *data, char **argv)
 	else
 	{
 		if (ft_atoi(argv[1]) == 0)
-			return (0);
+			return (1);
 		else
 			data->philo_count = ft_atoi(argv[1]);
 	}
@@ -29,26 +41,35 @@ int	initialize_data(t_data *data, char **argv)
 	|| data->time_to_eat > 100 || data->time_to_sleep > 100)
 	{
 		printf("do not meet argv requirements i set up to avoid infinity\n");
-		return (0);
+		return (1);
 	}
-	return 1;
+
+	return (init_mutex(data));
 }
 
 void	*routine(void *data)
 {
 	t_data *new_data;
 	new_data = (t_data *)data;
-	pthread_mutex_lock(&new_data->mutex_var);
+	pthread_mutex_lock(&new_data->mutex_var[0]);
 	printf("in routine\n");
 	sleep(1);
-	pthread_mutex_unlock(&new_data->mutex_var);
+	pthread_mutex_unlock(&new_data->mutex_var[0]);
 	return (data);
+}
+
+int destroy_mutexes(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->philo_count)
+		pthread_mutex_destroy(&data->mutex_var[i++]);
+	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	pthread_t	thread1;
-	pthread_t	thread2;
 	t_data *data;
 
 	//check args
@@ -57,16 +78,23 @@ int	main(int argc, char **argv)
 		printf("argc not correct");
 		return (1);
 	}
-	if ((data = calloc(1, sizeof(t_data))) == NULL)
+	if ((data = ft_calloc(1, sizeof(t_data))) == NULL)
 		return (1);
-	if (initialize_data(data, argv) == 0)
+	if (init_data(data, argv))
 		return (1);
-	pthread_mutex_init(&data->mutex_var, NULL);
-	pthread_create(&thread1, NULL, &routine, data);
-	pthread_create(&thread2, NULL, &routine, data);
-	pthread_join(thread1, NULL);
-	pthread_join(thread2, NULL);
+	//creating threads;
+	if ((data->threads = ft_calloc(data->philo_count, sizeof(pthread_t))) == NULL)
+		return (1);
+	int i = 0;
+	while (i < data->philo_count)
+		pthread_create(&(data->threads[i++]), NULL, &routine, data);
+	i = 0;
+	//ENDING THREADS
+	while (i < data->philo_count)
+		pthread_join(data->threads[i++], NULL);
+	if (destroy_mutexes(data))
+		return (1);
 
-	pthread_mutex_destroy(&data->mutex_var);
+ //how should i manage 
 	return (0);
 }
