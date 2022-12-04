@@ -76,7 +76,7 @@ void	*routine(void *philo)
 	// }
 	
 	sleep(2);
-	return (n_philo); //RETURN LOOP
+	return (philo); //RETURN WHAT????
 }
 
 int destroy_mutexes(t_data *data)
@@ -85,13 +85,16 @@ int destroy_mutexes(t_data *data)
 
 	i = 0;
 	while (i < data->philo_count)
+	{
+		printf("destroying  %d\n", i);
 		pthread_mutex_destroy(&data->mutex[i++]);
+	}
 	return (0);
 }
 
-int	free_stuff(t_data *data)
+int	free_stuff(t_data *data, t_philos *philo)
 {
-	free(data->mutex);
+	free(philo);
 	free(data);
 	return (0);
 }
@@ -111,15 +114,14 @@ int	main(int argc, char **argv)
 		return (1);
 	if (!(philo = ft_calloc(data->philo_count, sizeof(t_philos))))
 		return (1);
-	if (!init_data(data, argv))
+	if (init_data(data, argv))
 		return (1);
-	if (!init_mutex_and_philos(data, philo, argv))
+	if (init_mutex_and_philos(data, philo, argv))
 	return (1);
 	//RETURN THREAD OR SMTH
 
 	//create thread array
 	int	i = 0;
-
 	while (i < data->philo_count)
 	{
 		pthread_create(&(philo[i].thread), NULL, &routine, &(philo[i]));
@@ -129,10 +131,13 @@ int	main(int argc, char **argv)
 	//ENDING THREADS
 	i = 0;
 	while (i < data->philo_count)
+	{
+		printf("joining %d\n", i);
 		pthread_join(philo[i++].thread, NULL);
+	}
 	if (destroy_mutexes(data))
 		return (1);
-	free_stuff(data);
+	free_stuff(data, philo);
  //how should i manage 
 	return (0);
 }
