@@ -11,11 +11,10 @@
 // int	main(int argc, char **argv);
 #include "../philo.h"
 
-int	init_mutex_and_philos(t_data *data)
+int	init_mutex_and_philos(t_data *data, t_philos *philo, char **argv)
 {
 	int	i;
 
-	data->curr_nb = 0;
 	if (!(data->mutex = ft_calloc(data->philo_count + 1, sizeof(pthread_mutex_t))))
 		return (1);
 	i = 0;
@@ -25,12 +24,14 @@ int	init_mutex_and_philos(t_data *data)
 		pthread_mutex_lock(&data->mutex[i++]);
 	}
 	//make philos structs
-	if (!(data->philos = ft_calloc(data->philo_count, sizeof(t_philos))))
-		return (1);
 	i = 0;
 	while (i < data->philo_count)
 	{
-		data->philos[i].id = i;
+		if (argv[5])
+			philo[i].eat_count = *argv[5];
+		philo[i].data = data;
+		philo[i].id = i;
+		//SET ALL PHILO VARS FROM EX ARGV Here
 		i++;
 	}
 	return (0);
@@ -56,7 +57,7 @@ int	init_data(t_data *data, char **argv)
 		return (1);
 	}
 
-	return (init_mutex_and_philos(data));
+	return (0);
 }
 
 void	*routine(void *philo)
@@ -65,7 +66,7 @@ void	*routine(void *philo)
 	n_philo = (t_philos *)philo;
 	gettimeofday(&n_philo->time_since_eat, NULL);
 	printf("in routine. philo id is %d\n", n_philo->id);
-	//DO ALL OPERATION INCLUDING PHILOARRAY UPDATES?
+	//TAKE FORKS and display message before taking other fork, remember equal is right first
 	//HOW TO CHECK WHICH THREAD YOU ARE IN??
 	//if equal number check right 
 	// while (1)
@@ -98,6 +99,7 @@ int	free_stuff(t_data *data)
 int	main(int argc, char **argv)
 {
 	t_data *data;
+	t_philos *philo;
 
 	//check args
 	if (argc < 5 || 6 < argc)
@@ -107,20 +109,27 @@ int	main(int argc, char **argv)
 	}
 	if ((data = ft_calloc(1, sizeof(t_data))) == NULL)
 		return (1);
-	init_data(data, argv);
+	if (!(philo = ft_calloc(data->philo_count, sizeof(t_philos))))
+		return (1);
+	if (!init_data(data, argv))
+		return (1);
+	if (!init_mutex_and_philos(data, philo, argv))
+	return (1);
+	//RETURN THREAD OR SMTH
+
 	//create thread array
 	int	i = 0;
 
 	while (i < data->philo_count)
 	{
-		pthread_create(&(data->philos[i].thread), NULL, &routine, &(data->philos[i]));
+		pthread_create(&(philo[i].thread), NULL, &routine, &(philo[i]));
 		i++;
 	}
 
 	//ENDING THREADS
 	i = 0;
 	while (i < data->philo_count)
-		pthread_join(data->philos[i++].thread, NULL);
+		pthread_join(philo[i++].thread, NULL);
 	if (destroy_mutexes(data))
 		return (1);
 	free_stuff(data);
