@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2022/12/02 22:31:37 by nick             ###   ########.fr       */
+/*   Updated: 2022/12/04 21:25:53 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,26 @@
 # include <string.h>
 # include <unistd.h>
 # include <pthread.h>
+#	include <sys/time.h>
 # include "libftprintf/ft_printf.h"
 
 typedef struct s_philos
 {
+	int							id;
+	pthread_t	thread;
+	struct timeval	time_since_eat;
 	//stuff for each philopher
 }	t_philos;
 
 typedef struct s_data
 {
+	int	curr_nb;
 	int	philo_count;
 	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	nb_times_eat;
-	pthread_mutex_t *mutex_var;
-	pthread_t	*threads;
+	pthread_mutex_t *mutex;
 	t_philos *philos;
 }	t_data;
 

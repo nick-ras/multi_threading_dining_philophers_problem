@@ -11,15 +11,28 @@
 // int	main(int argc, char **argv);
 #include "../philo.h"
 
-int	init_mutex(t_data *data)
+int	init_mutex_and_philos(t_data *data)
 {
 	int	i;
 
-	i = 0;
-	if (!(data->mutex_var = calloc(data->philo_count, sizeof(pthread_mutex_t))))
+	data->curr_nb = 0;
+	if (!(data->mutex = ft_calloc(data->philo_count + 1, sizeof(pthread_mutex_t))))
 		return (1);
+	i = 0;
 	while (i < data->philo_count)
-		pthread_mutex_init(&data->mutex_var[i++], NULL);
+	{
+		pthread_mutex_init(&data->mutex[i], NULL);
+		pthread_mutex_lock(&data->mutex[i++]);
+	}
+	//make philos structs
+	if (!(data->philos = ft_calloc(data->philo_count, sizeof(t_philos))))
+		return (1);
+	i = 0;
+	while (i < data->philo_count)
+	{
+		data->philos[i].id = i;
+		i++;
+	}
 	return (0);
 }
 
@@ -43,18 +56,26 @@ int	init_data(t_data *data, char **argv)
 		return (1);
 	}
 
-	return (init_mutex(data));
+	return (init_mutex_and_philos(data));
 }
 
-void	*routine(void *data)
+void	*routine(void *philo)
 {
-	t_data *new_data;
-	new_data = (t_data *)data;
-	pthread_mutex_lock(&new_data->mutex_var[0]);
-	printf("in routine\n");
-	sleep(0.1);
-	pthread_mutex_unlock(&new_data->mutex_var[0]);
-	return (data);
+	t_philos *n_philo;
+	n_philo = (t_philos *)philo;
+	gettimeofday(&n_philo->time_since_eat, NULL);
+	printf("in routine. philo id is %d\n", n_philo->id);
+	//DO ALL OPERATION INCLUDING PHILOARRAY UPDATES?
+	//HOW TO CHECK WHICH THREAD YOU ARE IN??
+	//if equal number check right 
+	// while (1)
+	// {
+	// 	if (data->curr_nb % 2 == 0)
+	//			
+	// }
+	
+	sleep(2);
+	return (n_philo); //RETURN LOOP
 }
 
 int destroy_mutexes(t_data *data)
@@ -63,14 +84,13 @@ int destroy_mutexes(t_data *data)
 
 	i = 0;
 	while (i < data->philo_count)
-		pthread_mutex_destroy(&data->mutex_var[i++]);
+		pthread_mutex_destroy(&data->mutex[i++]);
 	return (0);
 }
 
 int	free_stuff(t_data *data)
 {
-	free(data->threads);
-	free(data->mutex_var);
+	free(data->mutex);
 	free(data);
 	return (0);
 }
@@ -87,18 +107,20 @@ int	main(int argc, char **argv)
 	}
 	if ((data = ft_calloc(1, sizeof(t_data))) == NULL)
 		return (1);
-	if (init_data(data, argv))
-		return (1);
-	//creating threads;
-	if ((data->threads = ft_calloc(data->philo_count, sizeof(pthread_t))) == NULL)
-		return (1);
-	int i = 0;
+	init_data(data, argv);
+	//create thread array
+	int	i = 0;
+
 	while (i < data->philo_count)
-		pthread_create(&(data->threads[i++]), NULL, &routine, data);
-	i = 0;
+	{
+		pthread_create(&(data->philos[i].thread), NULL, &routine, &(data->philos[i]));
+		i++;
+	}
+
 	//ENDING THREADS
+	i = 0;
 	while (i < data->philo_count)
-		pthread_join(data->threads[i++], NULL);
+		pthread_join(data->philos[i++].thread, NULL);
 	if (destroy_mutexes(data))
 		return (1);
 	free_stuff(data);
