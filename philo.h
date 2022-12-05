@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2022/12/04 22:01:03 by nick             ###   ########.fr       */
+/*   Updated: 2022/12/05 22:00:20 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,8 @@
 
 typedef struct s_data
 {
-	int	curr_nb;
 	int	philo_count;
-	int	time_to_die;
+	__uint64_t	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	nb_times_eat;
@@ -39,8 +38,8 @@ typedef struct s_philos
 	pthread_t	thread;
 	struct timeval	time_since_eat;
 	int eat_count;
-	//stuff for each philopher
-	t_data	*data;
+	int is_eating;
+	t_data *data;
 }	t_philos;
 
 #endif
