@@ -59,7 +59,7 @@ int	init_data(t_data *data, char **argv)
 		else
 			data->philo_count = ft_atoi(argv[1]);
 	}
-	data->time_to_die = 200000;
+	data->time_to_die = 200000; //set * 1000
 	//check if numbers are under requirement
 	if (data->philo_count > 100 || data->nb_times_eat > 100 || data->time_to_die > 20000000 \
 	|| data->time_to_eat > 100 || data->time_to_sleep > 100)
@@ -75,35 +75,25 @@ __uint64_t	get_time_death( t_philos *philo)
 	struct timeval after;
 
 	gettimeofday(&after, NULL);
-	printf("start %ld now %ld\n", philo->time_since_eat.tv_usec, after.tv_usec);
+	printf("start %ld now %ld\n", philo->time_since_eat.tv_sec, after.tv_sec);
 
-  return(after.tv_usec - philo->time_since_eat.tv_usec);
+  return(after.tv_sec - philo->time_since_eat.tv_sec);
 }
 
-void	*check_death(void *philo)
-{
-	t_philos *n_philo;
-	n_philo = (t_philos *)philo;
-	//set is_eating in 
-	while (1)
-	{
-		if (!n_philo->is_eating && get_time_death(n_philo) > n_philo->data->time_to_die)
-		{
-			printf("the mighty philosopher %d has died \n", n_philo->id);
-			//UPDATE SMTH
-		}
-	}
-	return (philo);
-}
 
 void	*routine(void *philo)
 {
 	t_philos *n_philo;
 	n_philo = (t_philos *)philo;
-
-	gettimeofday(&(n_philo->time_since_eat), NULL);
+	
 	//pthread_create(&thr, NULL, &check_death, n_philo); //IF == NULL
-	printf("philo id  %d time %ld \n", n_philo->id, n_philo->time_since_eat.tv_usec);
+	gettimeofday(&n_philo->time_since_eat, NULL);
+	printf("routine: philo id  %d time %ld \n", n_philo->id, n_philo->time_since_eat.tv_sec); //THIS DOESNT WORK
+
+	while (1)
+	{
+		//eat, sleep, think
+	}
 	//TAKE FORKS and display message before taking other fork, remember equal is right first
 	//HOW TO CHECK WHICH THREAD YOU ARE IN??
 	//if equal number check right 
@@ -136,6 +126,35 @@ int	free_stuff(t_data *data, t_philos *philo)
 	return (0);
 }
 
+void	*check_death(void *philo)
+{
+	t_philos	*n_philo;
+	struct timeval	curr;
+	int i;
+
+	n_philo = (t_philos*) philo;
+
+	i = 0;
+	while (1)
+	{
+		//CHECK IF THREAD IS INITIATED
+		
+		printf("philo id %d i %d phill count %d\n", n_philo[i].id, i, n_philo[i].data->philo_count);
+		gettimeofday(&curr, NULL);
+		if (!n_philo->is_eating && (curr.tv_sec - n_philo->time_since_eat.tv_sec) > n_philo->data->time_to_die)
+		{
+			printf("the mighty philosopher %d has died \n", n_philo->id);
+			printf("joining %d\n", n_philo->id);
+			pthread_join(n_philo->thread, NULL);
+		}
+		if (i >= (n_philo[i].data->philo_count - 1))
+			i = 0;
+		else
+			i++;
+	}
+	return (philo);
+}
+
 int	main(int argc, char **argv)
 {
 	t_data *data;
@@ -155,16 +174,20 @@ int	main(int argc, char **argv)
 		return (1);
 	if (init_mutex_and_philos(data, philo, argv))
 		return (1);
-	//RETURN THREAD OR SMTH
+	
 
+	//make check of death
+	pthread_t check_thread;
+	pthread_create(&check_thread, NULL, &check_death, &(philo));
 	//create thread array
 	int	i = 0;
 	while (i < data->philo_count)
 	{
 		pthread_create(&(philo[i].thread), NULL, &routine, &(philo[i]));
+		//SEES OUTCOME
+		printf("thread %ld\n", philo[i].thread);
 		i++;
 	}
-	sleep(4);
 	//ENDING THREADS
 	i = 0;
 	while (i < data->philo_count)

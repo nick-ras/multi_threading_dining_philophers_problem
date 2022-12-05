@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2022/12/05 22:00:20 by nick             ###   ########.fr       */
+/*   Updated: 2022/12/05 23:05:54 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 typedef struct s_data
 {
 	int	philo_count;
-	__uint64_t	time_to_die;
+	time_t	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	nb_times_eat;
