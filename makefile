@@ -6,7 +6,7 @@
 #    By: nick <nick@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/12 10:21:39 by nickras           #+#    #+#              #
-#    Updated: 2022/12/06 14:28:02 by nick             ###   ########.fr        #
+#    Updated: 2022/12/07 13:01:23 by nick             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,8 @@ CFLAG = -Wall -Werror -Wextra
 SRC_DIR = 	./src/
 OBJ_DIR =   ./obj/
 
-SRC_FILES = init_argv.c free_destroy.c in_threads.c \
-init_create.c main.c
+SRC_FILES = free_destroy.c in_threads.c \
+init.c main.c helper.c
 
 OBJ_FILES = ${SRC_FILES:.c=.o}
 SRC			= $(addprefix $(SRC_DIR),$(SRC_FILES))

@@ -11,16 +11,6 @@
 // int	main(int argc, char **argv);
 #include "../philo.h"
 
-__uint64_t	get_time_death( t_philos *philo)
-{
-	struct timeval after;
-
-	gettimeofday(&after, NULL);
-	printf("start %ld now %ld\n", philo->time_since_eat.tv_sec, after.tv_sec);
-
-  return(after.tv_sec - philo->time_since_eat.tv_sec);
-}
-
 int	main(int argc, char **argv)
 {
 	t_data *data;
@@ -29,7 +19,7 @@ int	main(int argc, char **argv)
 	//check args
 	if (argc < 5 || 6 < argc)
 	{
-		printf("argc not correct");
+		printf("argc not correct\n");
 		return (1);
 	}
 	if ((data = ft_calloc(1, sizeof(t_data))) == NULL)
@@ -38,23 +28,13 @@ int	main(int argc, char **argv)
 		return (1);
 	if (init_data(data, argv))
 		return (1);
-	if (init_mutex_and_philos(data, philo, argv))
+	if (init_mutex_and_philos(data, philo))
 		return (1);
-	sleep(1);
 	if (create_threads(data, philo))
 		return(1);
-	//ENDING THREADS
-	// i = 0;
-	// while (i < data->philo_count)
-	// {
-	// 	printf("joining %d\n", i);
-	// 	if (pthread_join(philo[i++].thread, NULL) != NULL)
-	// 		retutn (1);
-	// }
-	sleep(4);
-	// if (destroy_mutexes(data))
-	// 	return (1);
-	free_stuff(data, philo);
+	sleep(2);
+	join_threads(philo);
+	free_destroy(data, philo);
  //how should i manage 
 	return (0);
 }
