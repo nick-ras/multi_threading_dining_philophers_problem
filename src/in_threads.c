@@ -14,100 +14,60 @@ int	create_threads(t_data *data, t_philos *philo)
 	}
 	return (0);
 }
+
 int eat_sleep_think(void *philo)
 {
-	t_philos n_philo;
-
-	n_philo = *(t_philos *)philo;
-	unlock_philo(&n_philo);
-	print_message(&n_philo, "stopped thinking");
-	n_philo.is_eating = 1;
-	print_message(&n_philo, "eating");
-	usleep(n_philo.data.time_to_eat * 1000);
-	n_philo.eat_count--;
-	n_philo.is_eating = 0;
-	print_message(&n_philo, "stopped eating");
-	n_philo.death_clock = get_time() + n_philo.data.time_to_die * 1000; // move down??
-	lock_philo(&n_philo);
-	print_message(&n_philo, "sleeping");
-	usleep(n_philo.data.time_to_sleep * 1000);
-	print_message(&n_philo, "stopped sleeping");
-	print_message(&n_philo, "thinking");
+	unlock_philo(philo);
+	print_message(philo, "stopped thinking");
+	((t_philos *)philo)->is_eating = 1;
+	print_message(philo, "eating");
+	usleep(((t_philos *)philo)->data.time_to_eat);
+	((t_philos *)philo)->eat_count--;
+	((t_philos *)philo)->is_eating = 0;
+	print_message(philo, "stopped eating");
+	((t_philos *)philo)->death_clock = get_time() + ((t_philos *)philo)->data.time_to_die; // move down?? or what to do?
+	lock_philo(philo);
+	print_message(philo, "sleeping");
+	usleep(((t_philos *)philo)->data.time_to_sleep);
+	print_message(philo, "stopped sleeping");
+	print_message(philo, "thinking");
 	return (0);
 }
 
 void	*routine(void *philo)
 {
-	t_philos n_philo;
-
-	n_philo = *(t_philos *)philo;
-	n_philo.death_clock = get_time() + n_philo.data.time_to_die * 1000;
-	//printf("routine death clock %ld curr  %ld death - curr %ld\n", n_philo.death_clock, get_time(), n_philo.death_clock - get_time());
-	if(pthread_create(&n_philo.check_thread, NULL, &check_death, &n_philo))
+	((t_philos	*)philo)->death_clock = get_time() + ((t_philos	*)philo)->data.time_to_die;
+	if(pthread_create(&((t_philos	*)philo)->check_thread, NULL, &check_death, philo))
 		return (NULL);
-	//JOIN HERE?
 	while (1)
 	{
 		eat_sleep_think(philo);
-		if (n_philo.dead)
+		if (((t_philos	*)philo)->dead)
 			return (NULL);
-	}
-	//TAKE FORKS and display message before taking other fork, remember equal is right first
-	//HOW TO CHECK WHICH THREAD YOU ARE IN??
-	//if equal number check right 
-	// while (1)
-	// {
-	// 	if (data->curr_nb % 2 == 0)
-	//			
-	// }
-	return (NULL); //RETURN WHAT????
-}
-
-void	*check_death(void *philo)
-{
-	t_philos	*n_philo;
-	int i;
-
-	n_philo = (t_philos*) philo;
-	i = 0;
-		//CHECK IF THREAD IS INITIATED??
-		//SET INIT PARAMETER WHEN INIT THREAT`?
-	while (1)
-	{
-		if (n_philo->death_clock)
-		{
-			if (n_philo[i].data.dead == 1)
-				return (NULL);
-			//printf("philosopher %d time left in ms %ld \n", i, n_philo[i].death_clock - get_time());
-			if (!n_philo->is_eating && (n_philo[i].death_clock) < get_time())
-			{
-				printf("the mighty philosopher %d has died \n", n_philo[i].id);
-				i = 0;
-				unlock_philo(philo);
-				printf("data locked to 1\n");
-				n_philo[i].data.dead = 1;
-				lock_philo(philo);
-				return (philo);
-			}
-			usleep(3000);
-		}
 	}
 	return (NULL);
 }
 
-int join_threads(t_philos *philo)
+void	*check_death(void *philo)
 {
-	int i;
-
-	i = 0;
-	while (i < philo[0].data.philo_count)
+	while (1)
 	{
-		printf("joining routine %d\n", i);
-		if (!pthread_join(philo[i].check_thread, NULL))
-			return (1);
-		if (!pthread_join(philo[i].thread, NULL))
-			return (1);
-		i++;
+		if (((t_philos	*)philo)->death_clock)
+		{
+			if (((t_philos	*)philo)->data.dead == 1)
+				return (NULL);
+			printf("philosopher %d time left in ms %ld \n", ((t_philos	*)philo)->id, ((t_philos	*)philo)->death_clock - get_time());
+			if (!((t_philos	*)philo)->is_eating && ((t_philos	*)philo)->death_clock < get_time())
+			{
+				unlock_philo(philo);
+				printf("the mighty philosopher %d has died\n", ((t_philos	*)philo)->id);
+				((t_philos *)philo)->data.dead = 1;
+				pthread_mutex_lock(((t_philos	*)philo)->lfork);
+				pthread_mutex_lock(((t_philos	*)philo)->rfork);
+				return (NULL);
+			}
+		}
+		usleep(1000000);
 	}
-	return (0);
+	return (NULL);
 }

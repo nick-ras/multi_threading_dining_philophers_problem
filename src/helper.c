@@ -21,16 +21,16 @@ int	lock_philo(t_philos *philo)
 {
 	if (philo->id % 2 == 0)
 	{
-		pthread_mutex_lock(&philo->lfork);
+		pthread_mutex_lock(philo->lfork);
 		print_message(philo, "take_lfork");
-		pthread_mutex_lock(&philo->rfork);
+		pthread_mutex_lock(philo->rfork);
 		print_message(philo, "take_rfork");
 	}
 	if (philo->id % 2 == 1)
 	{
-		pthread_mutex_lock(&philo->rfork);
+		pthread_mutex_lock(philo->rfork);
 		print_message(philo, "take_rfork");
-		pthread_mutex_lock(&philo->lfork);
+		pthread_mutex_lock(philo->lfork);
 		print_message(philo, "take_lfork");
 	}
 	return (0);
@@ -38,9 +38,9 @@ int	lock_philo(t_philos *philo)
 
 int	unlock_philo(t_philos *philo)
 {
-	pthread_mutex_unlock(&philo->lfork);
+	pthread_mutex_unlock(philo->lfork);
 	print_message(philo, "drop_lfork");
-	pthread_mutex_unlock(&philo->rfork);
+	pthread_mutex_unlock(philo->rfork);
 	print_message(philo, "drop_rfork");
 	return (0);
 }

@@ -18,8 +18,8 @@ int	init_mutex_and_philos(t_data *data, t_philos *philo)
 		if (data->eat_total)
 			philo[i].eat_count = data->eat_total;
 		philo[i].id = i;
-		philo[i].lfork = data->mutex[i];
-		philo[i].rfork = data->mutex[(i + 1) % data->philo_count];
+		philo[i].lfork = &data->mutex[i];
+		philo[i].rfork = &data->mutex[(i + 1) % data->philo_count];
 		i++;
 	}
 	return (0);
@@ -36,7 +36,6 @@ int	init_mutex(t_data *data)
 	{
 		pthread_mutex_init(&data->mutex[i], NULL);
 		pthread_mutex_lock(&data->mutex[i]);
-		
 		i++;
 	}
 	return (0);
@@ -49,20 +48,18 @@ int	init_data(t_data *data, char **argv)
 		return (1);
 	if (1 > (data->time_to_die = ft_atoi(argv[2])))
 		return (1);
-	if (1 > (data->time_to_eat= ft_atoi(argv[3])))
+	if (1 > (data->time_to_eat= ft_atoi(argv[3]) * 1000))
 		return (1);
-	if (1 > (data->time_to_sleep = ft_atoi(argv[4])))
+	if (1 > (data->time_to_sleep = ft_atoi(argv[4]) * 1000))
 		return (1);
 	if (argv[5])
 	{
-		if (1 > (data->eat_total = ft_atoi(argv[5])))
+		if (1 > (data->eat_total = ft_atoi(argv[5]) * 1000))
 			return (1);
 	}
-	//check if numbers are under requirement
-	if (data->philo_count > 100 || data->eat_total > 100 || data->time_to_die > 200 \
-	|| data->time_to_eat > 100 || data->time_to_sleep > 100)
+	if (data->philo_count  > 100)
 	{
-		printf("do not meet argv requirements i set up to avoid infinity\n");
+		printf("too many philosophers");
 		return (1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2022/12/07 15:50:19 by nick             ###   ########.fr       */
+/*   Updated: 2022/12/08 17:16:29 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ typedef struct s_philos
 	int eat_count;
 	int is_eating;
 	int	dead;
-	pthread_mutex_t	lfork;
-	pthread_mutex_t	rfork;
+	pthread_mutex_t	*lfork;
+	pthread_mutex_t	*rfork;
 	t_data data;
 }	t_philos;
 
@@ -67,6 +67,6 @@ int	unlock_philo(t_philos *philo);
 void	*routine(void *philo);
 void	*check_death(void *philo);
 int	create_threads(t_data *data, t_philos *philo);
-int join_threads(t_philos *philo);
+int join_threads(t_data *data, t_philos *philo);
 
 #endif

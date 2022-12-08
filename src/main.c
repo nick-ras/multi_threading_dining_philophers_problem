@@ -32,9 +32,9 @@ int	main(int argc, char **argv)
 		return (1);
 	if (create_threads(data, philo))
 		return(1);
-	sleep(2);
-	join_threads(philo);
-	free_destroy(data, philo);
- //how should i manage 
+	if (join_threads(data, philo))
+		return(1);
+	if (free_destroy(data, philo))
+		return(1);
 	return (0);
 }
