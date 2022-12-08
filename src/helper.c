@@ -1,6 +1,6 @@
 #include "../philo.h"
 
-__uint64_t get_time(void)
+unsigned long get_time(void)
 {
 	struct timeval	time;
 
@@ -10,11 +10,11 @@ __uint64_t get_time(void)
 
 void	print_message(t_philos *philo, char *msg)
 {
-	if (philo->data.dead == 0)
+	if (philo->data.dead)
 	{
-			if (ft_strncmp(msg, "died", ft_strlen(msg)))
-				printf("philo %d died\n", philo->id);
+			return ;
 	}
+	printf("philo %d %s\n", philo->id, msg);
 }
 
 int	lock_philo(t_philos *philo)
@@ -22,7 +22,6 @@ int	lock_philo(t_philos *philo)
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->lfork);
-		printf("argc not correct\n"); //HEREHERHERHERHE
 		print_message(philo, "take_lfork");
 		pthread_mutex_lock(&philo->rfork);
 		print_message(philo, "take_rfork");
