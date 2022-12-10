@@ -12,14 +12,15 @@ int	init_mutex_and_philos(t_data *data, t_philos *philo)
 	{
 		philo[i].id = i;
 		philo[i].death_clock = 0;
+		init_mutex(&philo[i].death_clock);
 		philo[i].data = *data;
 		philo[i].is_eating = 0;
 		philo[i].dead = 0;
 		if (data->eat_total)
 			philo[i].eat_count = data->eat_total;
 		philo[i].id = i;
-		philo[i].lfork = &data->mutex[i];
-		philo[i].rfork = &data->mutex[(i + 1) % data->philo_count];
+		philo[i].lfork = &data->m_forks[i];
+		philo[i].rfork = &data->m_forks[(i + 1) % data->philo_count];
 		i++;
 	}
 	return (0);
@@ -29,17 +30,20 @@ int	init_mutex(t_data *data)
 {
 	int	i;
 
-	if ((data->mutex = ft_calloc((size_t)(data->philo_count + 1), sizeof(pthread_mutex_t))) == NULL)
+	if ((data->m_forks = ft_calloc((size_t)(data->philo_count + 1), sizeof(pthread_mutex_t))) == NULL)
+		return (1);
+	if ((data->m_philo = ft_calloc((size_t)(data->philo_count + 1), sizeof(pthread_mutex_t))) == NULL)
+	
 		return (1);
 	i = 0;
 	while (i < data->philo_count)
 	{
-		pthread_mutex_init(&data->mutex[i], NULL);
-		pthread_mutex_unlock(&data->mutex[i]);
+		pthread_mutex_init(&data->m_forks[i], NULL);
+		pthread_mutex_init(&data->m_philo[i], NULL);
 		i++;
 	}
-	pthread_mutex_init(&data->m_check, NULL);
-	pthread_mutex_unlock(&data->m_check);
+	pthread_mutex_init(&data->m_data, NULL);
+	pthread_mutex_init(&data->m_dead, NULL);
 	return (0);
 }
 

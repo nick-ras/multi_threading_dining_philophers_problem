@@ -33,6 +33,7 @@ int	main(int argc, char **argv)
 		return (1);
 	if(pthread_create(&thread_check, NULL, &check_death, &philo))
 			return (1);
+	usleep(10000);
 	if (create_threads(data, philo))
 		return(1);
 	if (join_threads(data, philo))

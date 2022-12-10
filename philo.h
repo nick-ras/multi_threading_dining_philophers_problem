@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2022/12/10 14:56:40 by nick             ###   ########.fr       */
+/*   Updated: 2022/12/10 16:18:09 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ typedef struct s_data
 	int	time_to_sleep;
 	int	eat_total;
 	int dead;
-	pthread_mutex_t *mutex;
-	pthread_mutex_t	m_check;
+	pthread_mutex_t *m_forks;
+	pthread_mutex_t	m_dead;
 }	t_data;
 
 typedef struct s_philos
@@ -42,6 +42,8 @@ typedef struct s_philos
 	int eat_count;
 	int is_eating;
 	int	dead;
+	pthread_mutex_t	m_dead_clock;
+	pthread_mutex_t	m_philo;
 	pthread_mutex_t	*lfork;
 	pthread_mutex_t	*rfork;
 	t_data data;
@@ -59,9 +61,12 @@ int	init_data(t_data *data, char **argv);
 
 //helper
 unsigned long get_time(void);
-void	print_message(t_philos *philo, char *msg);
+int	print_message(t_philos *philo, char *msg);
 int	lock_philo(t_philos *philo);
 int	unlock_philo(t_philos *philo);
+int check_dead_var(t_philos *philo);
+int	clock_started(t_philos *ph);
+int	update_clock(t_philos *ph);
 
 //in_threads
 void	*routine(void *philo);

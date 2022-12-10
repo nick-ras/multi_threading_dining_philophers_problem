@@ -26,9 +26,11 @@ int	free_destroy(t_data *data, t_philos *philo)
 	while (i < data->philo_count)
 	{
 		printf("destroying  %d\n", i);
-		pthread_mutex_destroy(&data->mutex[i++]);
+		pthread_mutex_destroy(&data->m_forks[i++]);
+		pthread_mutex_destroy(&data->m_philo[i++]);
 	}
-	free(data->mutex);
+	free(data->m_forks);
+		free(data->m_philo);
 	free(philo);
 	free(data);
 	return (0);
