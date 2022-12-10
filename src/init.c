@@ -12,7 +12,8 @@ int	init_mutex_and_philos(t_data *data, t_philos *philo)
 	{
 		philo[i].id = i;
 		philo[i].death_clock = 0;
-		init_mutex(&philo[i].death_clock);
+		pthread_mutex_init(&philo[i].m_dead_clock, NULL);
+		pthread_mutex_init(&philo[i].m_eating, NULL);
 		philo[i].data = *data;
 		philo[i].is_eating = 0;
 		philo[i].dead = 0;
@@ -32,17 +33,12 @@ int	init_mutex(t_data *data)
 
 	if ((data->m_forks = ft_calloc((size_t)(data->philo_count + 1), sizeof(pthread_mutex_t))) == NULL)
 		return (1);
-	if ((data->m_philo = ft_calloc((size_t)(data->philo_count + 1), sizeof(pthread_mutex_t))) == NULL)
-	
-		return (1);
 	i = 0;
 	while (i < data->philo_count)
 	{
 		pthread_mutex_init(&data->m_forks[i], NULL);
-		pthread_mutex_init(&data->m_philo[i], NULL);
 		i++;
 	}
-	pthread_mutex_init(&data->m_data, NULL);
 	pthread_mutex_init(&data->m_dead, NULL);
 	return (0);
 }

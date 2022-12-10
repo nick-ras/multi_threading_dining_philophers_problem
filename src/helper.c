@@ -47,7 +47,9 @@ int	unlock_philo(t_philos *philo)
 
 int check_dead_var(t_philos *philo)
 {
+	printf("before check dead\n");
 	pthread_mutex_lock(&philo->data.m_dead);
+	printf("after check dead\n");
 	if (((t_philos *)philo)->data.dead)
 	{
 		pthread_mutex_unlock(&philo->data.m_dead);
@@ -71,23 +73,66 @@ int	clock_started(t_philos *ph)
 
 int	update_clock(t_philos *ph)
 {
-	pthread_mutex_lock(&ph->data.m_data);
+	printf("before update clock\n");
+	pthread_mutex_lock(&ph->m_dead_clock);
+	printf("afterupdate clock\n");
 	ph->death_clock = get_time() + ph->data.time_to_die;
-	pthread_mutex_unlock(&ph->data.m_data);
+	pthread_mutex_unlock(&ph->m_dead_clock);
+	return (0);
+}
+
+int	stdout_clock(t_philos ph)
+{
+	unsigned long time = get_time();
+
+	printf("HEY before showing clock\n");
+	pthread_mutex_lock(&ph.m_dead_clock);
+	printf("ph %d count down %ld \n", ph.id, (ph.death_clock - time));
+	pthread_mutex_unlock(&ph.m_dead_clock);
+	return (0);
+}
+
+int	update_eating(t_philos *ph, int eat)
+{
+	printf("before eating\n");
+	pthread_mutex_lock(&ph->m_eating);
+	printf("after eating\n");
+	if (eat)
+		ph->is_eating = eat;
+	else
+	{
+		ph->eat_count--;
+		ph->is_eating = eat;
+	}
+	pthread_mutex_unlock(&ph->m_eating);
+	return (0);
+}
+
+int	check_eat(t_philos	*ph)
+{
+	pthread_mutex_lock(&ph->m_eating);
+	if (ph->eat_count <= 0)
+	{
+		pthread_mutex_unlock(&ph->m_eating);
+		return (1);
+	}
+	pthread_mutex_unlock(&ph->m_eating);
 	return (0);
 }
 
 int	time_ran_out(t_philos *ph)
 {
+	printf("HEY time ran out\n");
 	pthread_mutex_lock(&ph->m_dead_clock);
-	pthread_mutex_lock(&ph->m_philo);
+	pthread_mutex_lock(&ph->m_dead_clock);
+		printf("HEY after time ran out\n");
 	if (ph->is_eating && (ph->death_clock < get_time()))
 	{
 		pthread_mutex_unlock(&ph->m_dead_clock);
-		pthread_mutex_unlock(&ph->m_philo);
+		pthread_mutex_lock(&ph->m_eating);
 		return (1);
 	}
 	pthread_mutex_unlock(&ph->m_dead_clock);
-	pthread_mutex_unlock(&ph->m_philo);
+	pthread_mutex_lock(&ph->m_eating);
 	return (0);
 }

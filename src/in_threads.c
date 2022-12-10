@@ -18,7 +18,6 @@ int	create_threads(t_data *data, t_philos *philo)
 void	*routine(void *philo)
 {
 	t_philos *ph;
-	int nb;
 
 	ph = (t_philos *)philo;
 	update_clock(ph);
@@ -26,25 +25,19 @@ void	*routine(void *philo)
 	{
 		lock_philo(philo);
 		print_message(philo, "stopped thinking");
-		ph->id = 1;
 		print_message(philo, "eating");
+		update_eating(ph, 1);
 		usleep(ph->data.time_to_eat);
-		if (check_dead_var(philo))
-			return (NULL);
-		ph->eat_count--;
-		ph->is_eating = 0;
+		unlock_philo(philo);
 		print_message(philo, "stopped eating");
+		update_eating(ph, 0);
 		update_clock(ph);
 		print_message(philo, "sleeping");
-		nb = ph->data.time_to_sleep;
-		unlock_philo(philo);
-		usleep(nb);
-		lock_philo(philo);
+		usleep(ph->data.time_to_sleep);
 		print_message(philo, "stopped sleeping");
 		print_message(philo, "thinking");
 		if (check_dead_var(philo))
 			return (NULL);
-		unlock_philo(philo);
 	}
 	return (NULL);
 }
@@ -58,16 +51,17 @@ void	*check_death(void	*philo)
 	i = 0;
 	while (1)
 	{
-		pthread_mutex_lock(&ph[0].data.m_philo[i]);
 		if (clock_started(ph))
 		{
-			//printf("ph %d count down %ld \n", ph[i].id, (ph[i].death_clock - get_time()));
-			if (check_dead_var(ph));
+			stdout_clock(ph[i]);
+			if (check_dead_var(ph))
 				return (NULL);
-			if (time_ran_out(ph))
+			if (time_ran_out(ph) || check_eat(ph))
 			{
 				printf("the mighty philosopher %d has died\n", ph[i].id);
-				ph[0].data.dead = 1;
+				pthread_mutex_lock(&ph->data.m_dead);
+				ph->data.dead = 1;
+				pthread_mutex_unlock(&ph->data.m_dead);
 				return (0);
 			}
 		}
@@ -75,9 +69,6 @@ void	*check_death(void	*philo)
 			i = 0;
 		else
 			i++;
-		//pthread_mutex_lock(&ph[0].data.m_data);
-		pthread_mutex_unlock(&ph[0].data.m_philo[i]);
-		usleep(1000);
 	}
 	return (0);
 }
