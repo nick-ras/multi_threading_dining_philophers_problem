@@ -15,6 +15,7 @@ int	main(int argc, char **argv)
 {
 	t_data *data;
 	t_philos *philo;
+	pthread_t	thread_check;
 
 	//check args
 	if (argc < 5 || 6 < argc)
@@ -30,6 +31,8 @@ int	main(int argc, char **argv)
 		return (1);
 	if (init_mutex_and_philos(data, philo))
 		return (1);
+	if(pthread_create(&thread_check, NULL, &check_death, &philo))
+			return (1);
 	if (create_threads(data, philo))
 		return(1);
 	if (join_threads(data, philo))

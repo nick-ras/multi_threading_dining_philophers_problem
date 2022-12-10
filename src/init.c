@@ -35,9 +35,11 @@ int	init_mutex(t_data *data)
 	while (i < data->philo_count)
 	{
 		pthread_mutex_init(&data->mutex[i], NULL);
-		pthread_mutex_lock(&data->mutex[i]);
+		pthread_mutex_unlock(&data->mutex[i]);
 		i++;
 	}
+	pthread_mutex_init(&data->m_check, NULL);
+	pthread_mutex_unlock(&data->m_check);
 	return (0);
 }
 

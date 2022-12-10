@@ -19,14 +19,14 @@ void	print_message(t_philos *philo, char *msg)
 
 int	lock_philo(t_philos *philo)
 {
-	if (philo->id % 2 == 0)
+	if (philo->id % 2 == 0 && !((t_philos	*)philo)->dead)
 	{
 		pthread_mutex_lock(philo->lfork);
 		print_message(philo, "take_lfork");
 		pthread_mutex_lock(philo->rfork);
 		print_message(philo, "take_rfork");
 	}
-	if (philo->id % 2 == 1)
+	if (philo->id % 2 == 1  && !((t_philos	*)philo)->dead)
 	{
 		pthread_mutex_lock(philo->rfork);
 		print_message(philo, "take_rfork");
@@ -38,6 +38,7 @@ int	lock_philo(t_philos *philo)
 
 int	unlock_philo(t_philos *philo)
 {
+	 
 	pthread_mutex_unlock(philo->lfork);
 	print_message(philo, "drop_lfork");
 	pthread_mutex_unlock(philo->rfork);
