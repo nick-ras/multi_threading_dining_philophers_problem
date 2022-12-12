@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2022/12/10 17:03:38 by nick             ###   ########.fr       */
+/*   Updated: 2022/12/12 12:41:15 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	print_message(t_philos *philo, char *msg);
 int	lock_philo(t_philos *philo);
 int	unlock_philo(t_philos *philo);
 int check_dead_var(t_philos *philo);
-int	clock_started(t_philos *ph);
+int	clock_started(t_philos ph);
 int	update_clock(t_philos *ph);
 int	update_eating(t_philos *ph, int eat);
 int	time_ran_out(t_philos *ph);

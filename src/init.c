@@ -50,19 +50,18 @@ int	init_data(t_data *data, char **argv)
 		return (1);
 	if (1 > (data->time_to_die = ft_atoi(argv[2])))
 		return (1);
-	if (1 > (data->time_to_eat= ft_atoi(argv[3]) * 1000))
+	if (1 > (data->time_to_eat= ft_atoi(argv[3])))
 		return (1);
-	if (1 > (data->time_to_sleep = ft_atoi(argv[4]) * 1000))
+	if (1 > (data->time_to_sleep = ft_atoi(argv[4])))
 		return (1);
 	if (argv[5])
 	{
-		if (1 > (data->eat_total = ft_atoi(argv[5]) * 1000))
+		if (1 > (data->eat_total = ft_atoi(argv[5])))
 			return (1);
 	}
 	if (data->philo_count  > 100)
 	{
-		printf("too many philosophers");
-		return (1);
+		printf("too many philosophers");return (1);
 	}
 	return (0);
 }

@@ -51,24 +51,23 @@ void	*check_death(void	*philo)
 	i = 0;
 	while (1)
 	{
-		if (clock_started(ph))
+		if (clock_started(ph[i]))
 		{
-			stdout_clock(ph[i]);
 			if (check_dead_var(ph))
 				return (NULL);
 			if (time_ran_out(ph) || check_eat(ph))
 			{
-				printf("the mighty philosopher %d has died\n", ph[i].id);
+				printf("PHILOSOPHER %d died", ph[i].id);
 				pthread_mutex_lock(&ph->data.m_dead);
 				ph->data.dead = 1;
 				pthread_mutex_unlock(&ph->data.m_dead);
 				return (0);
 			}
-		}
-		if (i >= ph[0].data.philo_count - 1)
-			i = 0;
-		else
-			i++;
+			if (i >= ph[0].data.philo_count - 1)
+				i = 0;
+			else
+				i++;
+		}	
 	}
-	return (0);
+	return (NULL);
 }

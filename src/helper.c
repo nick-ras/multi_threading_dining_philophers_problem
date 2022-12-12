@@ -47,11 +47,12 @@ int	unlock_philo(t_philos *philo)
 
 int check_dead_var(t_philos *philo)
 {
-	printf("before check dead\n");
+	// printf("before check dead\n");
 	pthread_mutex_lock(&philo->data.m_dead);
-	printf("after check dead\n");
+	// printf("after check dead\n");
 	if (((t_philos *)philo)->data.dead)
 	{
+		printf("data.dead is %d\n", ((t_philos *)philo)->data.dead);
 		pthread_mutex_unlock(&philo->data.m_dead);
 		return (1);
 	}
@@ -59,23 +60,23 @@ int check_dead_var(t_philos *philo)
 	return (0);
 }
 
-int	clock_started(t_philos *ph)
+int	clock_started(t_philos ph)
 {
-	pthread_mutex_lock(&ph->m_dead_clock);
-	if (ph->death_clock)
+	pthread_mutex_lock(&ph.m_dead_clock);
+	//printf("clock %ld\n", ph.death_clock);
+	if (ph.death_clock)
 	{
-		pthread_mutex_unlock(&ph->m_dead_clock);
+		printf("clock %ld\n", ph.death_clock);
+		pthread_mutex_unlock(&ph.m_dead_clock);
 		return (1);
 	}
-	pthread_mutex_unlock(&ph->m_dead_clock);
+	pthread_mutex_unlock(&ph.m_dead_clock);
 	return (0);
 }
 
 int	update_clock(t_philos *ph)
 {
-	printf("before update clock\n");
 	pthread_mutex_lock(&ph->m_dead_clock);
-	printf("afterupdate clock\n");
 	ph->death_clock = get_time() + ph->data.time_to_die;
 	pthread_mutex_unlock(&ph->m_dead_clock);
 	return (0);
@@ -84,8 +85,6 @@ int	update_clock(t_philos *ph)
 int	stdout_clock(t_philos ph)
 {
 	unsigned long time = get_time();
-
-	printf("HEY before showing clock\n");
 	pthread_mutex_lock(&ph.m_dead_clock);
 	printf("ph %d count down %ld \n", ph.id, (ph.death_clock - time));
 	pthread_mutex_unlock(&ph.m_dead_clock);
@@ -94,9 +93,7 @@ int	stdout_clock(t_philos ph)
 
 int	update_eating(t_philos *ph, int eat)
 {
-	printf("before eating\n");
 	pthread_mutex_lock(&ph->m_eating);
-	printf("after eating\n");
 	if (eat)
 		ph->is_eating = eat;
 	else
@@ -122,10 +119,8 @@ int	check_eat(t_philos	*ph)
 
 int	time_ran_out(t_philos *ph)
 {
-	printf("HEY time ran out\n");
 	pthread_mutex_lock(&ph->m_dead_clock);
-	pthread_mutex_lock(&ph->m_dead_clock);
-		printf("HEY after time ran out\n");
+	pthread_mutex_lock(&ph->m_eating);
 	if (ph->is_eating && (ph->death_clock < get_time()))
 	{
 		pthread_mutex_unlock(&ph->m_dead_clock);
