@@ -15,7 +15,6 @@ int	main(int argc, char **argv)
 {
 	t_data *data;
 	t_philos *philo;
-	pthread_t	thread_check;
 
 	//check args
 	if (argc < 5 || 6 < argc)
@@ -25,15 +24,14 @@ int	main(int argc, char **argv)
 	}
 	if ((data = ft_calloc(1, sizeof(t_data))) == NULL)
 		return (1);
-	if ((philo = ft_calloc(data->philo_count + 1, sizeof(t_philos))) == NULL)
-		return (1);
 	if (init_data(data, argv))
+		return (1);
+	if ((philo = ft_calloc(data->philo_count + 1, sizeof(t_philos))) == NULL)
 		return (1);
 	if (init_mutex_and_philos(data, philo))
 		return (1);
-	if(pthread_create(&thread_check, NULL, &check_death, &philo))
-			return (1);
-	usleep(10000);
+	if(pthread_create(&data->thread_check, NULL, &check_death, philo))
+		return (1);
 	if (create_threads(data, philo))
 		return(1);
 	if (join_threads(data, philo))

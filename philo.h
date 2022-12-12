@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2022/12/12 12:41:15 by nick             ###   ########.fr       */
+/*   Updated: 2022/12/12 15:07:41 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,14 @@ typedef struct s_data
 	int dead;
 	pthread_mutex_t *m_forks;
 	pthread_mutex_t	m_dead;
+	pthread_t	thread_check;
 }	t_data;
 
 typedef struct s_philos
 {
 	int							id;
 	pthread_t	thread;
+	pthread_t	thread_check;
 	unsigned long	death_clock;
 	int eat_count;
 	int is_eating;
@@ -65,10 +67,10 @@ int	print_message(t_philos *philo, char *msg);
 int	lock_philo(t_philos *philo);
 int	unlock_philo(t_philos *philo);
 int check_dead_var(t_philos *philo);
-int	clock_started(t_philos ph);
+int	clock_started(t_philos *ph);
 int	update_clock(t_philos *ph);
 int	update_eating(t_philos *ph, int eat);
-int	time_ran_out(t_philos *ph);
+int	time_ran_out(t_philos ph);
 int	check_eat(t_philos	*ph);
 int	stdout_clock(t_philos ph);
 

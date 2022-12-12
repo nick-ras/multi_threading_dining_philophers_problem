@@ -4,7 +4,7 @@ int	init_mutex_and_philos(t_data *data, t_philos *philo)
 {
 	int	i;
 
-	printf("%p%p\n", data, philo); //APPARENTLY HAS TO BE THERE!
+	//printf("%p%p\n", data, philo); //APPARENTLY HAS TO BE THERE!
 	//make struct for each philosopher
 	i = 0;
 	init_mutex(data);
@@ -16,7 +16,6 @@ int	init_mutex_and_philos(t_data *data, t_philos *philo)
 		pthread_mutex_init(&philo[i].m_eating, NULL);
 		philo[i].data = *data;
 		philo[i].is_eating = 0;
-		philo[i].dead = 0;
 		if (data->eat_total)
 			philo[i].eat_count = data->eat_total;
 		philo[i].id = i;
@@ -61,7 +60,8 @@ int	init_data(t_data *data, char **argv)
 	}
 	if (data->philo_count  > 100)
 	{
-		printf("too many philosophers");return (1);
+		printf("too many philosophers");
+		return (1);
 	}
 	return (0);
 }
