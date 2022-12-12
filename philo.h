@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2022/12/12 15:07:41 by nick             ###   ########.fr       */
+/*   Updated: 2022/12/12 15:54:35 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_philos
 	pthread_mutex_t	m_eating;
 	pthread_mutex_t	*lfork;
 	pthread_mutex_t	*rfork;
-	t_data data;
+	t_data *data;
 }	t_philos;
 
 //init
@@ -71,7 +71,7 @@ int	clock_started(t_philos *ph);
 int	update_clock(t_philos *ph);
 int	update_eating(t_philos *ph, int eat);
 int	time_ran_out(t_philos ph);
-int	check_eat(t_philos	*ph);
+int	check_eat(t_philos ph);
 int	stdout_clock(t_philos ph);
 
 //in_threads

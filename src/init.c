@@ -14,10 +14,9 @@ int	init_mutex_and_philos(t_data *data, t_philos *philo)
 		philo[i].death_clock = 0;
 		pthread_mutex_init(&philo[i].m_dead_clock, NULL);
 		pthread_mutex_init(&philo[i].m_eating, NULL);
-		philo[i].data = *data;
+		philo[i].data = data;
 		philo[i].is_eating = 0;
-		if (data->eat_total)
-			philo[i].eat_count = data->eat_total;
+		philo[i].eat_count = data->eat_total;
 		philo[i].id = i;
 		philo[i].lfork = &data->m_forks[i];
 		philo[i].rfork = &data->m_forks[(i + 1) % data->philo_count];
@@ -58,6 +57,8 @@ int	init_data(t_data *data, char **argv)
 		if (1 > (data->eat_total = ft_atoi(argv[5])))
 			return (1);
 	}
+	else
+		data->eat_total = -1;
 	if (data->philo_count  > 100)
 	{
 		printf("too many philosophers");
