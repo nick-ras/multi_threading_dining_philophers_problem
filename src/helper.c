@@ -96,6 +96,13 @@ int	update_eating(t_philos *ph, int eat)
 		ph->is_eating = eat;
 	else
 	{
+		if (ph->is_eating == 1)
+		{
+			printf("finish eating\n");
+			pthread_mutex_lock(&ph->data->m_dead);
+			ph->data->dead = 1;
+			pthread_mutex_unlock(&ph->data->m_dead);
+		}
 		ph->eat_count--;
 		ph->is_eating = eat;
 	}
