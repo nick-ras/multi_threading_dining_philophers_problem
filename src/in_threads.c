@@ -27,13 +27,13 @@ void	*routine(void *philo)
 		print_message(philo, "stopped thinking");
 		print_message(philo, "eating");
 		update_eating(ph, 1);
-		usleep(ph->data->time_to_eat);
+		usleep(ph->data->time_to_eat * 1000);
 		unlock_philo(philo);
 		print_message(philo, "stopped eating");
 		update_eating(ph, 0);
 		update_clock(ph);
 		print_message(philo, "sleeping");
-		usleep(ph->data->time_to_sleep);
+		usleep(ph->data->time_to_sleep * 1000);
 		print_message(philo, "stopped sleeping");
 		print_message(philo, "thinking");
 		if (check_dead_var(philo))

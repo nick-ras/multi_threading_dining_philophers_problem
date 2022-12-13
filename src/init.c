@@ -17,7 +17,6 @@ int	init_mutex_and_philos(t_data *data, t_philos *philo)
 		philo[i].data = data;
 		philo[i].is_eating = 0;
 		philo[i].eat_count = data->eat_total;
-		philo[i].id = i;
 		philo[i].lfork = &data->m_forks[i];
 		philo[i].rfork = &data->m_forks[(i + 1) % data->philo_count];
 		i++;

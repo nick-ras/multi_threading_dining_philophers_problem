@@ -63,7 +63,7 @@ int	clock_started(t_philos *ph)
 	pthread_mutex_lock(&ph->m_dead_clock);
 	if (ph->death_clock)
 	{
-		printf("timeleft %ld\n", ph->death_clock - get_time());
+		printf("phil %d timeleft %ld\n", ph->id, ph->death_clock - get_time());
 		pthread_mutex_unlock(&ph->m_dead_clock);
 		return (1);
 	}
@@ -108,7 +108,7 @@ int	check_eat(t_philos ph)
 	pthread_mutex_lock(&ph.m_eating);
 	if (!ph.eat_count)
 	{
-		printf("eating = 0\n");
+		printf("done eating\n");
 		pthread_mutex_unlock(&ph.m_eating);
 		return (1);
 	}
