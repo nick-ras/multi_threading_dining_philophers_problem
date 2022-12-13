@@ -30,7 +30,8 @@ void	*routine(void *philo)
 		usleep(ph->data->time_to_eat * 1000);
 		unlock_philo(philo);
 		print_message(philo, "stopped eating");
-		update_eating(ph, 0);
+		if (update_eating(ph, 0))
+			return (NULL);
 		update_clock(ph);
 		print_message(philo, "sleeping");
 		usleep(ph->data->time_to_sleep * 1000);
@@ -53,9 +54,7 @@ void	*check_death(void	*philo)
 	{
 		if (clock_started(&ph[i]))
 		{
-			if (check_dead_var(&ph[i]))
-				return (NULL);
-			if (time_ran_out(ph[i]) || check_eat(ph[i]))
+			if (time_ran_out(ph[i]) || check_dead_var(&ph[i]))
 			{
 				printf("PHILOSOPHER %d DIED\n", ph[i].id);
 				pthread_mutex_lock(&ph[0].data->m_dead);

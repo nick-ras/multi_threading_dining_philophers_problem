@@ -98,28 +98,17 @@ int	update_eating(t_philos *ph, int eat)
 	{
 		if (ph->is_eating == 1)
 		{
-			printf("finish eating\n");
 			pthread_mutex_lock(&ph->data->m_dead);
+			printf("finish eating\n");
 			ph->data->dead = 1;
 			pthread_mutex_unlock(&ph->data->m_dead);
+			pthread_mutex_unlock(&ph->m_eating);
+			return (1);
 		}
 		ph->eat_count--;
 		ph->is_eating = eat;
 	}
 	pthread_mutex_unlock(&ph->m_eating);
-	return (0);
-}
-
-int	check_eat(t_philos ph)
-{
-	pthread_mutex_lock(&ph.m_eating);
-	if (!ph.eat_count)
-	{
-		printf("done eating\n");
-		pthread_mutex_unlock(&ph.m_eating);
-		return (1);
-	}
-	pthread_mutex_unlock(&ph.m_eating);
 	return (0);
 }
 
