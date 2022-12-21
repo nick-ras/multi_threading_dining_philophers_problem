@@ -37,6 +37,7 @@ int	init_mutex(t_data *data)
 		i++;
 	}
 	pthread_mutex_init(&data->m_dead, NULL);
+	pthread_mutex_init(&data->m_living, NULL);
 	return (0);
 }
 
@@ -45,6 +46,7 @@ int	init_data(t_data *data, char **argv)
 	data->dead = 0;
 	if (1 > (data->philo_count = ft_atoi(argv[1])))
 		return (1);
+	data->philo_living = data->philo_count;
 	if (1 > (data->time_to_die = ft_atoi(argv[2])))
 		return (1);
 	if (1 > (data->time_to_eat= ft_atoi(argv[3])))

@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2022/12/12 15:54:35 by nick             ###   ########.fr       */
+/*   Updated: 2022/12/21 13:14:51 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 typedef struct s_data
 {
 	int	philo_count;
+	int	philo_living;
 	unsigned long	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
@@ -32,6 +33,7 @@ typedef struct s_data
 	int dead;
 	pthread_mutex_t *m_forks;
 	pthread_mutex_t	m_dead;
+	pthread_mutex_t	m_living;
 	pthread_t	thread_check;
 }	t_data;
 

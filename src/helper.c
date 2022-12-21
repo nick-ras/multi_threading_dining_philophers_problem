@@ -18,6 +18,8 @@ int	print_message(t_philos *philo, char *msg)
 
 int	lock_philo(t_philos *philo)
 {
+	if (philo->data->philo_count < 2)
+		return (0);
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->lfork);
@@ -32,12 +34,13 @@ int	lock_philo(t_philos *philo)
 		pthread_mutex_lock(philo->lfork);
 		print_message(philo, "take_lfork");
 	}
-	return (0);
+	return (1);
 }
 
 int	unlock_philo(t_philos *philo)
 {
-	 
+	if (philo->data->philo_count < 2)
+		return (0);
 	pthread_mutex_unlock(philo->lfork);
 	print_message(philo, "drop_lfork");
 	pthread_mutex_unlock(philo->rfork);
@@ -63,7 +66,7 @@ int	clock_started(t_philos *ph)
 	pthread_mutex_lock(&ph->m_dead_clock);
 	if (ph->death_clock)
 	{
-		printf("phil %d timeleft %ld\n", ph->id, ph->death_clock - get_time());
+		//printf("phil %d timeleft %ld\n", ph->id, ph->death_clock - get_time());
 		pthread_mutex_unlock(&ph->m_dead_clock);
 		return (1);
 	}
@@ -93,19 +96,23 @@ int	update_eating(t_philos *ph, int eat)
 {
 	pthread_mutex_lock(&ph->m_eating);
 	if (eat)
+	{
 		ph->is_eating = eat;
+		pthread_mutex_unlock(&ph->m_eating);
+		return (0);
+	}
 	else
 	{
-		if (ph->is_eating == 1)
+		ph->eat_count--;
+		if (!ph->eat_count)
 		{
-			pthread_mutex_lock(&ph->data->m_dead);
-			printf("finish eating\n");
-			ph->data->dead = 1;
-			pthread_mutex_unlock(&ph->data->m_dead);
+			printf("philo %d finish eating\n", ph->id);
+			pthread_mutex_lock(&ph->data->m_living);
+			ph->data->philo_living--;
+			pthread_mutex_unlock(&ph->data->m_living);
 			pthread_mutex_unlock(&ph->m_eating);
 			return (1);
 		}
-		ph->eat_count--;
 		ph->is_eating = eat;
 	}
 	pthread_mutex_unlock(&ph->m_eating);
@@ -118,7 +125,7 @@ int	time_ran_out(t_philos ph)
 	pthread_mutex_lock(&ph.m_eating);
 	if (!ph.is_eating && (ph.death_clock < get_time()))
 	{
-		printf("time ran out\n");
+		//printf("time ran out\n");
 		pthread_mutex_unlock(&ph.m_dead_clock);
 		pthread_mutex_unlock(&ph.m_eating);
 		return (1);
