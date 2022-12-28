@@ -28,7 +28,8 @@ int	init_mutex(t_data *data)
 {
 	int	i;
 
-	if ((data->m_forks = ft_calloc((size_t)(data->philo_count + 1), sizeof(pthread_mutex_t))) == NULL)
+	data->m_forks = ft_calloc(data->philo_count + 1, sizeof(pthread_mutex_t));
+	if (data->m_forks == NULL)
 		return (1);
 	i = 0;
 	while (i < data->philo_count)
@@ -44,26 +45,31 @@ int	init_mutex(t_data *data)
 int	init_data(t_data *data, char **argv)
 {
 	data->dead = 0;
-	if (1 > (data->philo_count = ft_atoi(argv[1])))
+	data->philo_count = ft_atoi(argv[1]);
+	if (1 > data->philo_count)
 		return (1);
 	data->philo_living = data->philo_count;
-	if (1 > (data->time_to_die = ft_atoi(argv[2])))
+	data->time_to_die = ft_atoi(argv[2]);
+	if (1 > data->time_to_die)
 		return (1);
-	if (1 > (data->time_to_eat= ft_atoi(argv[3])))
+	data->time_to_eat = ft_atoi(argv[3]);
+	if (1 > data->time_to_eat)
 		return (1);
-	if (1 > (data->time_to_sleep = ft_atoi(argv[4])))
+	data->time_to_sleep = ft_atoi(argv[4]);
+	if (1 > data->time_to_sleep)
 		return (1);
 	if (argv[5])
 	{
-		if (1 > (data->eat_total = ft_atoi(argv[5])))
+		data->eat_total = ft_atoi(argv[5]);
+		if (1 > data->eat_total)
 			return (1);
 	}
 	else
 		data->eat_total = -1;
-	if (data->philo_count  > 100)
-	{
-		printf("too many philosophers");
-		return (1);
-	}
 	return (0);
 }
+// if (data->philo_count  > 100)
+// {
+// 	printf("too many philosophers");
+// 	return (1);
+// }

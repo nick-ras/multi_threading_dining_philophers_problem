@@ -13,30 +13,31 @@
 
 int	main(int argc, char **argv)
 {
-	t_data *data;
-	t_philos *philo;
+	t_data		*data;
+	t_philos	*philo;
 
-	//check args
 	if (argc < 5 || 6 < argc)
 	{
 		printf("argc not correct\n");
 		return (1);
 	}
-	if ((data = ft_calloc(1, sizeof(t_data))) == NULL)
+	data = ft_calloc(1, sizeof(t_data));
+	if (data == NULL)
 		return (1);
 	if (init_data(data, argv))
 		return (1);
-	if ((philo = ft_calloc(data->philo_count + 1, sizeof(t_philos))) == NULL)
+	philo = ft_calloc(data->philo_count + 1, sizeof(t_philos));
+	if (philo == NULL)
 		return (1);
 	if (init_mutex_and_philos(data, philo))
 		return (1);
-	if(pthread_create(&data->thread_check, NULL, &check_death, philo))
+	if (pthread_create(&data->thread_check, NULL, &check_death, philo))
 		return (1);
 	if (create_threads(data, philo))
-		return(1);
+		return (1);
 	if (join_threads(data, philo))
-		return(1);
+		return (1);
 	if (free_destroy(data, philo))
-		return(1);
+		return (1);
 	return (0);
 }

@@ -1,6 +1,6 @@
 #include "../philo.h"
 
-unsigned long get_time(void)
+unsigned long	get_time(void)
 {
 	struct timeval	time;
 
@@ -12,7 +12,7 @@ int	print_message(t_philos *philo, char *msg)
 {
 	if (check_dead_var(philo))
 		return (1);
-	printf("philo %d %s\n", philo->id, msg);
+	printf("%ld %d %s\n", get_time(), philo->id, msg);
 	return (0);
 }
 
@@ -23,16 +23,16 @@ int	lock_philo(t_philos *philo)
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->lfork);
-		print_message(philo, "take_lfork");
+		print_message(philo, "has taken a fork");
 		pthread_mutex_lock(philo->rfork);
-		print_message(philo, "take_rfork");
+		print_message(philo, "has taken a fork");
 	}
 	if (philo->id % 2 == 1)
 	{
 		pthread_mutex_lock(philo->rfork);
-		print_message(philo, "take_rfork");
+		print_message(philo, "has taken a fork");
 		pthread_mutex_lock(philo->lfork);
-		print_message(philo, "take_lfork");
+		print_message(philo, "has taken a fork");
 	}
 	return (1);
 }
@@ -42,13 +42,13 @@ int	unlock_philo(t_philos *philo)
 	if (philo->data->philo_count < 2)
 		return (0);
 	pthread_mutex_unlock(philo->lfork);
-	print_message(philo, "drop_lfork");
+	//print_message(philo, "drop_lfork");
 	pthread_mutex_unlock(philo->rfork);
-	print_message(philo, "drop_rfork");
+	//print_message(philo, "drop_rfork");
 	return (0);
 }
 
-int check_dead_var(t_philos *philo)
+int	check_dead_var(t_philos *philo)
 {
 	pthread_mutex_lock(&philo->data->m_dead);
 	//printf("id %d dead var = %d\n", philo->id, philo->data->dead);
@@ -58,79 +58,5 @@ int check_dead_var(t_philos *philo)
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->data->m_dead);
-	return (0);
-}
-
-int	clock_started(t_philos *ph)
-{
-	pthread_mutex_lock(&ph->m_dead_clock);
-	if (ph->death_clock)
-	{
-		//printf("phil %d timeleft %ld\n", ph->id, ph->death_clock - get_time());
-		pthread_mutex_unlock(&ph->m_dead_clock);
-		return (1);
-	}
-	pthread_mutex_unlock(&ph->m_dead_clock);
-	return (0);
-}
-
-int	update_clock(t_philos *ph)
-{
-	pthread_mutex_lock(&ph->m_dead_clock);
-	ph->death_clock = get_time() + ph->data->time_to_die;
-	// printf("phil %d clock updated og set %ld\n", ph->id, ph->death_clock);
-	pthread_mutex_unlock(&ph->m_dead_clock);
-	return (0);
-}
-
-int	stdout_clock(t_philos ph)
-{
-	unsigned long time = get_time();
-	pthread_mutex_lock(&ph.m_dead_clock);
-	printf("ph %d count down %ld \n", ph.id, (ph.death_clock - time));
-	pthread_mutex_unlock(&ph.m_dead_clock);
-	return (0);
-}
-
-int	update_eating(t_philos *ph, int eat)
-{
-	pthread_mutex_lock(&ph->m_eating);
-	if (eat)
-	{
-		ph->is_eating = eat;
-		pthread_mutex_unlock(&ph->m_eating);
-		return (0);
-	}
-	else
-	{
-		ph->eat_count--;
-		if (!ph->eat_count)
-		{
-			printf("philo %d finish eating\n", ph->id);
-			pthread_mutex_lock(&ph->data->m_living);
-			ph->data->philo_living--;
-			pthread_mutex_unlock(&ph->data->m_living);
-			pthread_mutex_unlock(&ph->m_eating);
-			return (1);
-		}
-		ph->is_eating = eat;
-	}
-	pthread_mutex_unlock(&ph->m_eating);
-	return (0);
-}
-
-int	time_ran_out(t_philos ph)
-{
-	pthread_mutex_lock(&ph.m_dead_clock);
-	pthread_mutex_lock(&ph.m_eating);
-	if (!ph.is_eating && (ph.death_clock < get_time()))
-	{
-		//printf("time ran out\n");
-		pthread_mutex_unlock(&ph.m_dead_clock);
-		pthread_mutex_unlock(&ph.m_eating);
-		return (1);
-	}
-	pthread_mutex_unlock(&ph.m_dead_clock);
-	pthread_mutex_unlock(&ph.m_eating);
 	return (0);
 }
