@@ -28,7 +28,7 @@ int	init_mutex(t_data *data)
 {
 	int	i;
 
-	data->m_forks = ft_calloc(data->philo_count + 1, sizeof(pthread_mutex_t));
+	data->m_forks = ft_calloc((data->philo_count + 1), sizeof(pthread_mutex_t));
 	if (data->m_forks == NULL)
 		return (1);
 	i = 0;
@@ -70,6 +70,6 @@ int	init_data(t_data *data, char **argv)
 }
 // if (data->philo_count  > 100)
 // {
-// 	printf("too many philosophers");
+// 	ft_printf("too many philosophers");
 // 	return (1);
 // }

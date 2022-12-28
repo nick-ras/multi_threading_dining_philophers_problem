@@ -9,6 +9,7 @@
 // pthread_mutex_destroy, p
 //gcc -pthread main.c
 // int	main(int argc, char **argv);
+// clear && make re && valgrind -v --leak-check=yes ./philo 2 1000 50 50
 #include "../philo.h"
 
 int	main(int argc, char **argv)
@@ -18,7 +19,7 @@ int	main(int argc, char **argv)
 
 	if (argc < 5 || 6 < argc)
 	{
-		printf("argc not correct\n");
+		ft_printf("argc not correct\n");
 		return (1);
 	}
 	data = ft_calloc(1, sizeof(t_data));
@@ -26,7 +27,7 @@ int	main(int argc, char **argv)
 		return (1);
 	if (init_data(data, argv))
 		return (1);
-	philo = ft_calloc(data->philo_count + 1, sizeof(t_philos));
+	philo = ft_calloc((data->philo_count + 1), sizeof(t_philos));
 	if (philo == NULL)
 		return (1);
 	if (init_mutex_and_philos(data, philo))

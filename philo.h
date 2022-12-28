@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2022/12/28 16:07:43 by nick             ###   ########.fr       */
+/*   Updated: 2022/12/28 18:11:56 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,48 +23,47 @@
 
 typedef struct s_data
 {
+	pthread_mutex_t	m_dead;
+	pthread_mutex_t	m_living;
+	pthread_mutex_t	*m_forks;
+	pthread_t		thread_check;
 	int				philo_count;
 	int				philo_living;
 	unsigned long	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	eat_total;
-	int	dead;
-	pthread_mutex_t	*m_forks;
-	pthread_mutex_t	m_dead;
-	pthread_mutex_t	m_living;
-	pthread_t	thread_check;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				eat_total;
+	int				dead;
 }	t_data;
 
 typedef struct s_philos
 {
-	int		id;
-	pthread_t	thread;
-	pthread_t	thread_check;
-	unsigned long	death_clock;
-	int	eat_count;
-	int	is_eating;
-	int	dead;
-	pthread_mutex_t	m_dead_clock;
-	pthread_mutex_t	m_eating;
-	pthread_mutex_t	*lfork;
-	pthread_mutex_t	*rfork;
-	t_data	*data;
+	pthread_t				thread;
+	pthread_mutex_t			m_dead_clock;
+	pthread_mutex_t			m_eating;
+	int						id;
+	unsigned long			death_clock;
+	int						eat_count;
+	int						is_eating;
+	int						dead;
+	pthread_mutex_t			*lfork;
+	pthread_mutex_t			*rfork;
+	t_data					*data;
 }	t_philos;
 
 //init
-int	init_mutex_and_philos(t_data *data, t_philos *philo);
-int	init_mutex(t_data *data);
+int						init_mutex_and_philos(t_data *data, t_philos *philo);
+unsigned long	get_time(void);
+int						init_mutex(t_data *data);
 
 //free_destroy
-int	free_destroy(t_data *data, t_philos *philo);
+int						free_destroy(t_data *data, t_philos *philo);
 
 //checks
-int	init_data(t_data *data, char **argv);
+int						init_data(t_data *data, char **argv);
 
 //helper
-unsigned long	get_time(void);
-int	print_message(t_philos *philo, char *msg);
+int						print_message(t_philos *philo, char *msg);
 int	lock_philo(t_philos *philo);
 int	unlock_philo(t_philos *philo);
 int	check_dead_var(t_philos *philo);
