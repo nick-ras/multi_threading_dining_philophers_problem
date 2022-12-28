@@ -9,7 +9,7 @@ int	create_threads(t_data *data, t_philos *philo)
 	{
 		if (pthread_create(&philo[i].thread, NULL, &routine, &philo[i]))
 			return (1);
-		usleep(10000);
+		usleep(100);
 		i++;
 	}
 	return (0);
@@ -27,14 +27,13 @@ void	*routine(void *philo)
 			return (NULL);
 		if (lock_philo(philo))
 		{
-			print_message(philo, "is eating");
 			update_eating(ph, 1);
+			print_message(philo, "is eating");
 			usleep(ph->data->time_to_eat * 1000);
+			update_clock(ph);
 			unlock_philo(philo);
 			if (update_eating(ph, 0))
 				return (NULL);
-			print_message(philo, "stopped eating");
-			update_clock(ph);
 			print_message(philo, "is sleeping");
 			usleep(ph->data->time_to_sleep * 1000);
 			print_message(philo, "is thinking");
@@ -43,23 +42,17 @@ void	*routine(void *philo)
 	return (NULL);
 }
 
-int	check_done_eating(t_philos ph)
+int	check_done_eating(t_philos *ph)
 {
 	if (all_done_eating(ph))
-		{
-			pthread_mutex_lock(&ph.data->m_dead);
-			ph.data->dead = 1;
-			pthread_mutex_unlock(&ph.data->m_dead);
-			ft_printf("ALL DONE EATING\n");
-			return (1);
-		}
-		return (0);
+		return (1);
+	return (0);
 }
 
 void	*check_death(void	*philo)
 {
 	int				i;
-	t_philos	*ph;
+	t_philos		*ph;
 
 	ph = (t_philos *)philo;
 	i = 0;
@@ -67,10 +60,9 @@ void	*check_death(void	*philo)
 	{
 		if (clock_started(&ph[i]))
 		{
-			printf("checks death\n");
 			if (ph->data->eat_total > 0)
 			{
-				if (check_done_eating(ph[i]))
+				if (check_done_eating(&ph[i]))
 					return (NULL);
 			}
 			if (time_ran_out(ph[i]))

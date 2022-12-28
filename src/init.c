@@ -11,6 +11,7 @@ int	init_mutex_and_philos(t_data *data, t_philos *philo)
 	while (i < data->philo_count)
 	{
 		philo[i].id = i;
+		//philo[i].dead = 0;
 		philo[i].death_clock = 0;
 		pthread_mutex_init(&philo[i].m_dead_clock, NULL);
 		pthread_mutex_init(&philo[i].m_eating, NULL);
