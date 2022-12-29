@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/29 11:14:36 by nick              #+#    #+#             */
+/*   Updated: 2022/12/29 11:16:31 by nick             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 // 1. number_of_philosophers 
 // 2. time_to_die 
 // 3. time_to_eat
@@ -12,16 +24,23 @@
 // clear && make re && valgrind -v --leak-check=yes ./philo 2 1000 50 50
 #include "../philo.h"
 
-int	main(int argc, char **argv)
+int	check_argc(int argc)
 {
-	t_data		*data;
-	t_philos	*philo;
-
 	if (argc < 5 || 6 < argc)
 	{
 		ft_printf("argc not correct\n");
 		return (1);
 	}
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	t_data		*data;
+	t_philos	*philo;
+
+	if (check_argc(argc))
+		return (1);
 	data = ft_calloc(1, sizeof(t_data));
 	if (data == NULL)
 		return (1);

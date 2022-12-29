@@ -1,17 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/29 11:14:24 by nick              #+#    #+#             */
+/*   Updated: 2022/12/29 11:14:28 by nick             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../philo.h"
 
 int	init_mutex_and_philos(t_data *data, t_philos *philo)
 {
 	int	i;
 
-	//printf("%p%p\n", data, philo); //APPARENTLY HAS TO BE THERE!
-	//make struct for each philosopher
 	i = 0;
 	init_mutex(data);
 	while (i < data->philo_count)
 	{
 		philo[i].id = i;
-		//philo[i].dead = 0;
 		philo[i].death_clock = 0;
 		pthread_mutex_init(&philo[i].m_dead_clock, NULL);
 		pthread_mutex_init(&philo[i].m_eating, NULL);

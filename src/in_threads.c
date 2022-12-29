@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   in_threads.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/29 11:09:46 by nick              #+#    #+#             */
+/*   Updated: 2022/12/29 11:10:52 by nick             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../philo.h"
 
 int	create_threads(t_data *data, t_philos *philo)
@@ -66,13 +78,7 @@ void	*check_death(void	*philo)
 					return (NULL);
 			}
 			if (time_ran_out(ph[i]))
-			{
-				pthread_mutex_lock(&ph[0].data->m_dead);
-				ph[i].data->dead = 1;
-				pthread_mutex_unlock(&ph[0].data->m_dead);
-				printf("%ld %d died\n", get_time(), ph[i].id);
 				return (NULL);
-			}
 			if (i >= (ph[0].data->philo_count - 1))
 				i = 0;
 			else

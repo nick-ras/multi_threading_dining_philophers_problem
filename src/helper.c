@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   helper.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/29 11:16:48 by nick              #+#    #+#             */
+/*   Updated: 2022/12/29 11:22:40 by nick             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../philo.h"
 
-unsigned long	get_time(void)
+uint64_t	get_time(void)
 {
 	struct timeval	time;
 
@@ -42,16 +54,14 @@ int	unlock_philo(t_philos *philo)
 	if (philo->data->philo_count < 2)
 		return (0);
 	pthread_mutex_unlock(philo->lfork);
-	//print_message(philo, "drop_lfork");
 	pthread_mutex_unlock(philo->rfork);
-	//print_message(philo, "drop_rfork");
 	return (0);
 }
 
+//printf("id %d dead var = %d\n", philo->id, philo->data->dead);
 int	check_dead_var(t_philos *philo)
 {
 	pthread_mutex_lock(&philo->data->m_dead);
-	//printf("id %d dead var = %d\n", philo->id, philo->data->dead);
 	if (philo->data->dead)
 	{
 		pthread_mutex_unlock(&philo->data->m_dead);

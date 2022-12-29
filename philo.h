@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2022/12/28 21:28:46 by nick             ###   ########.fr       */
+/*   Updated: 2022/12/29 11:22:17 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <string.h>
 # include <unistd.h>
 # include <pthread.h>
+# include <stdint.h>
 # include <sys/time.h>
 # include "libftprintf/ft_printf.h"
 
@@ -42,7 +43,6 @@ typedef struct s_philos
 	pthread_mutex_t			m_dead_clock;
 	pthread_mutex_t			m_eating;
 	int						id;
-	// int						dead;
 	unsigned long			death_clock;
 	int						eat_count;
 	int						is_eating;
@@ -52,30 +52,31 @@ typedef struct s_philos
 }	t_philos;
 
 //init
-int						init_mutex_and_philos(t_data *data, t_philos *philo);
-unsigned long	get_time(void);
-int						init_mutex(t_data *data);
+int			init_mutex_and_philos(t_data *data, t_philos *philo);
+uint64_t	get_time(void);
+int			init_mutex(t_data *data);
 
 //free_destroy
-int						free_destroy(t_data *data, t_philos *philo);
+int			free_destroy(t_data *data, t_philos *philo);
 
 //checks
-int						init_data(t_data *data, char **argv);
+int			init_data(t_data *data, char **argv);
 
 //helper
-int						print_message(t_philos *philo, char *msg);
-int	lock_philo(t_philos *philo);
-int	unlock_philo(t_philos *philo);
-int	check_dead_var(t_philos *philo);
-int	clock_started(t_philos *ph);
-int	update_clock(t_philos *ph);
-int	update_eating(t_philos *ph, int eat);
-int	time_ran_out(t_philos ph);
-int	check_eat(t_philos ph);
-int	all_done_eating(t_philos *ph);
+int			print_message(t_philos *philo, char *msg);
+int			lock_philo(t_philos *philo);
+int			unlock_philo(t_philos *philo);
+int			check_dead_var(t_philos *philo);
+int			clock_started(t_philos *ph);
+int			update_clock(t_philos *ph);
+int			update_eating(t_philos *ph, int eat);
+int			time_ran_out(t_philos ph);
+int			check_eat(t_philos ph);
+int			all_done_eating(t_philos *ph);
+
 //in_threads
-void	*routine(void *philo);
-void	*check_death(void	*philo);
-int	create_threads(t_data *data, t_philos *philo);
-int	join_threads(t_data *data, t_philos *philo);
+void		*routine(void *philo);
+void		*check_death(void	*philo);
+int			create_threads(t_data *data, t_philos *philo);
+int			join_threads(t_data *data, t_philos *philo);
 #endif
