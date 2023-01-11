@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:16:43 by nick              #+#    #+#             */
-/*   Updated: 2022/12/29 11:16:45 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/11 16:57:24 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	join_threads(t_data *data, t_philos *philo)
 		if (pthread_join(philo[i].thread, &ret))
 			return (1);
 		pthread_mutex_destroy(&philo[i].m_dead_clock);
-		pthread_mutex_destroy(&philo[i].m_eating);
 		i++;
 	}
 	return (0);

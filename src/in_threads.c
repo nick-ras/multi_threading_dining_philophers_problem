@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:09:46 by nick              #+#    #+#             */
-/*   Updated: 2022/12/29 11:10:52 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/11 16:59:08 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,11 @@ void	*routine(void *philo)
 			return (NULL);
 		if (lock_philo(philo))
 		{
-			update_eating(ph, 1);
 			print_message(philo, "is eating");
-			usleep(ph->data->time_to_eat * 1000);
 			update_clock(ph);
+			usleep(ph->data->time_to_eat * 1000);
 			unlock_philo(philo);
-			if (update_eating(ph, 0))
+			if (update_eating(ph))
 				return (NULL);
 			print_message(philo, "is sleeping");
 			usleep(ph->data->time_to_sleep * 1000);

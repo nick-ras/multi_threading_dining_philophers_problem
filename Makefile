@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    makefile                                           :+:      :+:    :+:    #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: nick <nick@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/12 10:21:39 by nickras           #+#    #+#              #
-#    Updated: 2023/01/11 12:21:13 by nick             ###   ########.fr        #
+#    Updated: 2023/01/11 17:02:19 by nick             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,20 +30,20 @@ SRC			= $(addprefix $(SRC_DIR),$(SRC_FILES))
 OBJ			= $(addprefix $(OBJ_DIR),$(OBJ_FILES))
 
 ${NAME}: ${OBJ} $(LIBFTPRINTF_A)
-			${CC} -o ${NAME} ${CFLAG} ${OBJ} ${LIBFTPRINTF_A}
+			@${CC} -o ${NAME} ${CFLAG} ${OBJ} ${LIBFTPRINTF_A}
 all: ${NAME}
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-			$(MAKE) all -C $(LIBFTPRINTF_PATH)
-			mkdir -p $(OBJ_DIR)
-			${CC} ${CFLAG} -o $@ -c $^
+			@$(MAKE) all -C $(LIBFTPRINTF_PATH)
+			@mkdir -p $(OBJ_DIR)
+			@${CC} ${CFLAG} -o $@ -c $^
 
 clean:
-			$(RM) ${OBJ_DIR}
+			@$(RM) ${OBJ_DIR}
 
 fclean: clean
-	make -C $(LIBFTPRINTF_PATH) fclean
-	$(RM) ${NAME}
+	@make -C $(LIBFTPRINTF_PATH) fclean
+	@$(RM) ${NAME}
 #			make fclean -C $(LIBFTPRINTF_PATH)
 
 re: fclean all
