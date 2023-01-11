@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:16:48 by nick              #+#    #+#             */
-/*   Updated: 2023/01/11 17:47:04 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/11 17:59:34 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	print_message(t_philos *philo, char *msg)
 {
 	if (check_dead_var(philo))
 		return (1);
-	printf("%ld %d %s\n", get_time(), philo->id, msg);
+	printf("%ld %d %s\n", philo->data->time_to_die - get_time(), philo->id, msg);
+	//printf("%ld %d %s\n", get_time(), philo->id, msg);
 	return (0);
 }
 
