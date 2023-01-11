@@ -6,7 +6,7 @@
 #    By: nick <nick@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/12 10:21:39 by nickras           #+#    #+#              #
-#    Updated: 2022/12/28 16:08:41 by nick             ###   ########.fr        #
+#    Updated: 2023/01/11 12:21:13 by nick             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ clean:
 			$(RM) ${OBJ_DIR}
 
 fclean: clean
-			$(RM) ${NAME}
+	make -C $(LIBFTPRINTF_PATH) fclean
+	$(RM) ${NAME}
 #			make fclean -C $(LIBFTPRINTF_PATH)
 
 re: fclean all

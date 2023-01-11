@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:17:10 by nick              #+#    #+#             */
-/*   Updated: 2022/12/29 11:17:13 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/11 12:02:19 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	update_eating(t_philos *ph, int eat_food)
 			pthread_mutex_unlock(&ph->m_eating);
 			pthread_mutex_lock(&ph->data->m_living);
 			ph->data->philo_living--;
-			ft_printf("living count %d\n", ph->data->philo_living);
+			//ft_printf("living count %d\n", ph->data->philo_living);
 			pthread_mutex_unlock(&ph->data->m_living);
 			return (1);
 		}
