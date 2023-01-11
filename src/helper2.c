@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:17:10 by nick              #+#    #+#             */
-/*   Updated: 2023/01/11 16:59:42 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/11 17:22:12 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	update_eating(t_philos *ph)
 int	time_ran_out(t_philos ph)
 {
 	pthread_mutex_lock(&ph.m_dead_clock);
-	if (!ph.is_eating && (ph.death_clock < get_time()))
+	if ((ph.death_clock < get_time()))
 	{
 		pthread_mutex_lock(&ph.data->m_dead);
 		ph.data->dead = 1;

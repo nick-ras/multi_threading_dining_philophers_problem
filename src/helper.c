@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:16:48 by nick              #+#    #+#             */
-/*   Updated: 2022/12/29 11:22:40 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/11 17:47:04 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ int	print_message(t_philos *philo, char *msg)
 
 int	lock_philo(t_philos *philo)
 {
-	if (philo->data->philo_count < 2)
-		return (0);
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->lfork);
@@ -39,7 +37,7 @@ int	lock_philo(t_philos *philo)
 		pthread_mutex_lock(philo->rfork);
 		print_message(philo, "has taken a fork");
 	}
-	if (philo->id % 2 == 1)
+	if (philo->id % 2 == 1 || philo->data->philo_count > 1)
 	{
 		pthread_mutex_lock(philo->rfork);
 		print_message(philo, "has taken a fork");
@@ -51,8 +49,6 @@ int	lock_philo(t_philos *philo)
 
 int	unlock_philo(t_philos *philo)
 {
-	if (philo->data->philo_count < 2)
-		return (0);
 	pthread_mutex_unlock(philo->lfork);
 	pthread_mutex_unlock(philo->rfork);
 	return (0);

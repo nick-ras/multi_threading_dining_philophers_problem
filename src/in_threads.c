@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:09:46 by nick              #+#    #+#             */
-/*   Updated: 2023/01/11 16:59:08 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/11 17:50:28 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	create_threads(t_data *data, t_philos *philo)
 	{
 		if (pthread_create(&philo[i].thread, NULL, &routine, &philo[i]))
 			return (1);
-		usleep(100);
 		i++;
 	}
 	return (0);
@@ -37,17 +36,20 @@ void	*routine(void *philo)
 	{
 		if (check_dead_var(philo))
 			return (NULL);
-		if (lock_philo(philo))
+		if (ph->data->philo_count > 1)
 		{
-			print_message(philo, "is eating");
-			update_clock(ph);
-			usleep(ph->data->time_to_eat * 1000);
-			unlock_philo(philo);
-			if (update_eating(ph))
-				return (NULL);
-			print_message(philo, "is sleeping");
-			usleep(ph->data->time_to_sleep * 1000);
-			print_message(philo, "is thinking");
+			if (lock_philo(philo))
+			{
+				print_message(philo, "is eating");
+				update_clock(ph);
+				usleep(ph->data->time_to_eat * 1000);
+				unlock_philo(philo);
+				if (update_eating(ph))
+					return (NULL);
+				print_message(philo, "is sleeping");
+				usleep(ph->data->time_to_sleep * 1000);
+				print_message(philo, "is thinking");
+			}
 		}
 	}
 	return (NULL);
@@ -83,7 +85,7 @@ void	*check_death(void	*philo)
 			else
 				i++;
 		}
-		usleep(1000);
+		usleep(100);
 	}
 	return (NULL);
 }

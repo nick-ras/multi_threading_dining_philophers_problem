@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2023/01/11 16:59:20 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/11 17:22:24 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_data
 	pthread_t		thread_check;
 	int				philo_count;
 	int				philo_living;
-	long	time_to_die;
+	long			time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				eat_total;
@@ -44,7 +44,6 @@ typedef struct s_philos
 	int						id;
 	unsigned long			death_clock;
 	int						eat_count;
-	int						is_eating;
 	pthread_mutex_t			*lfork;
 	pthread_mutex_t			*rfork;
 	t_data					*data;
