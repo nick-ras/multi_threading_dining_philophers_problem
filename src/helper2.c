@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:17:10 by nick              #+#    #+#             */
-/*   Updated: 2023/01/12 13:32:19 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/12 13:59:14 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int	time_ran_out(t_philos ph)
 	//printf("            check_death() results: %lld id %d\n",ph.last_meal - get_time() + ph.data->time_to_die, ph.id);
 	if (ph.last_meal - get_time() + ph.data->time_to_die <= 0)
 	{
+		if(check_dead_var(&ph))
+			return (1);
 		pthread_mutex_lock(&ph.data->m_dead);
 		ph.data->dead = 1;
 		pthread_mutex_unlock(&ph.data->m_dead);

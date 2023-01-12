@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:09:46 by nick              #+#    #+#             */
-/*   Updated: 2023/01/12 13:32:15 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/12 14:34:51 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,29 @@ void	*routine(void *philo)
 
 	ph = (t_philos *)philo;
 	update_last_meal(ph);
-	while (1)
+	if (ph->data->philo_count > 1)
 	{
-		if (check_dead_var(philo))
-			return (NULL);
-		if (lock_philo(philo))
+		while (1)
 		{
-			print_message(philo, "is eating");
-			update_last_meal(ph);
-			usleep(ph->data->time_to_eat * 1000);
-			unlock_philo(philo);
-			if (ph->data->eat_total > 0)
-				if (update_eating(ph))
-					return (NULL);
-			print_message(philo, "is sleeping");
-			usleep(ph->data->time_to_sleep * 1000);
-			print_message(philo, "is thinking");
+			if (check_dead_var(philo))
+				return (NULL);
+			if (lock_philo(philo))
+			{
+				print_message(philo, "is eating");
+				update_last_meal(ph);
+				usleep(ph->data->time_to_eat * 1000);
+				unlock_philo(philo);
+				if (ph->data->eat_total > 0)
+					if (update_eating(ph))
+						return (NULL);
+				print_message(philo, "is sleeping");
+				usleep(ph->data->time_to_sleep * 1000);
+				print_message(philo, "is thinking");
+			}
 		}
 	}
+	else
+		print_message(philo, "has taken a fork");
 	return (NULL);
 }
 
@@ -86,17 +91,22 @@ void	*check_done_eating(void	*philo)
 			printf("CLock started\n");
 			while (1)
 			{
+				if(check_dead_var(philo))
+					return (NULL);
 				pthread_mutex_lock(&ph->data->m_living);
 				if (ph->data->philo_living < 1)
 				{
+					if(check_dead_var(philo))
+					return (NULL);
 					ft_printf("All done eating\n"); //DELETE
+					pthread_mutex_lock(&ph->data->m_dead);
+					ph->data->dead = 1;
+					pthread_mutex_unlock(&ph->data->m_dead);
 					pthread_mutex_unlock(&ph->data->m_living);
 					return (NULL);
 				}
 				pthread_mutex_unlock(&ph->data->m_living);
 				usleep(100);
-				if(check_dead_var(philo))
-					return (NULL);
 			}
 		}
 	}
