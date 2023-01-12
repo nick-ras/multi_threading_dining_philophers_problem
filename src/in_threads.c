@@ -6,44 +6,40 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:09:46 by nick              #+#    #+#             */
-/*   Updated: 2023/01/12 19:55:17 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/12 21:43:20 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-int	create_threads(t_data *data, t_philos *philo)
+int	one_philo(t_philos *ph)
 {
-	int	i;
-
-	if (pthread_create(&data->check_philo_dead, NULL, &check_death, philo))
-		return (1);
-	if (data->eat_total > 0)
-		if (pthread_create(&data->check_done_eating, NULL, &check_done_eating, philo))
+	print_message(ph, "has taken a fork");
+	while (1)
+		if (check_dead_var(ph))
 			return (1);
-	i = -1;
-	while (++i < data->philo_count)
-		if (pthread_create(&philo[i].thread, NULL, &routine, &philo[i]))
-			return (1);
-	return (0);
+	return (1);
 }
 
-void	usleep_function(long long target)
+int	do_routine(t_philos *ph)
 {
-	long long start;
-	long long temp;
-
-	start = get_time();
-	while ((temp = get_time()) < start + target)
-	{
-		//printf("usleep = %lld\n", (start + target - temp) / 2);
-		usleep((start + target - temp) / 2);
-	}
+	print_message(ph, "is eating");
+	update_last_meal(ph);
+	usleep_function(ph->data->time_to_eat);
+	unlock_philo(ph);
+	if (ph->data->eat_total > 0)
+		if (update_eating(ph))
+			return (1);
+	print_message(ph, "is sleeping");
+	usleep_function(ph->data->time_to_sleep);
+	print_message(ph, "is thinking");
+	return (0);
 }
 
 void	*routine(void *philo)
 {
 	t_philos	*ph;
+
 	ph = (t_philos *)philo;
 	update_last_meal(ph);
 	if (ph->data->philo_count > 1)
@@ -53,22 +49,13 @@ void	*routine(void *philo)
 			if (check_dead_var(philo))
 				return (NULL);
 			if (lock_philo(philo))
-			{
-				print_message(philo, "is eating");
-				update_last_meal(ph);
-				usleep_function(ph->data->time_to_eat);
-				unlock_philo(philo);
-				if (ph->data->eat_total > 0)
-					if (update_eating(ph))
-						return (NULL);
-				print_message(philo, "is sleeping");
-				usleep_function(ph->data->time_to_sleep);
-				print_message(philo, "is thinking");
-			}
+				if (do_routine(ph))
+					return (NULL);
 		}
 	}
 	else
-		print_message(philo, "has taken a fork");
+		if (one_philo(ph))
+			return (NULL);
 	return (NULL);
 }
 
@@ -91,6 +78,9 @@ void	*check_death(void	*philos)
 	return (NULL);
 }
 
+// if (check_dead_var(philo))
+// 	return (NULL);
+// ft_printf("All done eating\n"); //DELETE
 void	*check_done_eating(void	*philo)
 {
 	t_philos		*ph;
@@ -102,17 +92,12 @@ void	*check_done_eating(void	*philo)
 		{
 			while (1)
 			{
-				if(check_dead_var(philo))
+				if (check_dead_var(philo))
 					return (NULL);
 				pthread_mutex_lock(&ph->data->m_living);
 				if (ph->data->philo_living < 1)
 				{
-					if(check_dead_var(philo))
-					return (NULL);
-					ft_printf("All done eating\n"); //DELETE
-					pthread_mutex_lock(&ph->data->m_dead);
-					ph->data->dead = 1;
-					pthread_mutex_unlock(&ph->data->m_dead);
+					set_dead_var(ph);
 					pthread_mutex_unlock(&ph->data->m_living);
 					return (NULL);
 				}
@@ -123,4 +108,3 @@ void	*check_done_eating(void	*philo)
 	}
 	return (NULL);
 }
-

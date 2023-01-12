@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2023/01/12 13:24:22 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/12 21:29:54 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_data
 	pthread_t		check_done_eating;
 	int				philo_count;
 	int				philo_living;
-	int			time_to_die;
+	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				eat_total;
@@ -43,7 +43,7 @@ typedef struct s_philos
 	pthread_t				thread;
 	pthread_mutex_t			m_last_meal;
 	int						id;
-	long long			last_meal;
+	long long				last_meal;
 	int						eat_count;
 	pthread_mutex_t			*lfork;
 	pthread_mutex_t			*rfork;
@@ -72,11 +72,14 @@ int			update_eating(t_philos *ph);
 int			time_ran_out(t_philos ph);
 int			check_eat(t_philos ph);
 int			all_done_eating(t_philos *ph);
+int			do_routine(t_philos *ph);
+void		set_dead_var(t_philos *ph);
+void		usleep_function(long long target);
 
 //in_threads
 void		*routine(void *philo);
 void		*check_death(void	*philo);
-void	*check_done_eating(void	*philo);
+void		*check_done_eating(void	*philo);
 int			create_threads(t_data *data, t_philos *philo);
 int			join_threads(t_data *data, t_philos *philo);
 #endif

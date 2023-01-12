@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:14:24 by nick              #+#    #+#             */
-/*   Updated: 2023/01/12 18:26:02 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/12 21:42:47 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,20 @@ int	init_data(t_data *data, char **argv)
 		data->eat_total = -1;
 	return (0);
 }
-// if (data->philo_count  > 100)
-// {
-// 	ft_printf("too many philosophers");
-// 	return (1);
-// }
+
+int	create_threads(t_data *data, t_philos *philo)
+{
+	int	i;
+
+	if (pthread_create(&data->check_philo_dead, NULL, &check_death, philo))
+		return (1);
+	if (data->eat_total > 0)
+		if (pthread_create(&data->check_done_eating, \
+		NULL, &check_done_eating, philo))
+			return (1);
+	i = -1;
+	while (++i < data->philo_count)
+		if (pthread_create(&philo[i].thread, NULL, &routine, &philo[i]))
+			return (1);
+	return (0);
+}

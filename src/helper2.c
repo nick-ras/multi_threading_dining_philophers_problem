@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:17:10 by nick              #+#    #+#             */
-/*   Updated: 2023/01/12 13:59:14 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/12 21:54:57 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	update_last_meal(t_philos *ph)
 {
 	pthread_mutex_lock(&ph->m_last_meal);
 	ph->last_meal = get_time();
-	//ft_printf("last meal %ld\n", ph->last_meal);
 	pthread_mutex_unlock(&ph->m_last_meal);
 	return (0);
 }
@@ -48,13 +47,14 @@ int	update_eating(t_philos *ph)
 	return (0);
 }
 
+//printf("            check_death() results: %lld id %d\n",ph.last_meal 
+//- get_time() + ph.data->time_to_die, ph.id);
 int	time_ran_out(t_philos ph)
 {
 	pthread_mutex_lock(&ph.m_last_meal);
-	//printf("            check_death() results: %lld id %d\n",ph.last_meal - get_time() + ph.data->time_to_die, ph.id);
 	if (ph.last_meal - get_time() + ph.data->time_to_die <= 0)
 	{
-		if(check_dead_var(&ph))
+		if (check_dead_var(&ph))
 			return (1);
 		pthread_mutex_lock(&ph.data->m_dead);
 		ph.data->dead = 1;
