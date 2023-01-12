@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:16:43 by nick              #+#    #+#             */
-/*   Updated: 2023/01/11 16:57:24 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/12 10:34:21 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,18 @@
 int	join_threads(t_data *data, t_philos *philo)
 {
 	int		i;
-	void	*ret;
-	void	*ret1;
 
 	i = 0;
-	if (pthread_join(data->thread_check, &ret1))
+	if (pthread_join(data->check_philo_dead, NULL))
 		return (1);
+	if (data->eat_total > 0)
+	{
+		if (pthread_join(data->check_done_eating, NULL))
+			return (1);
+	}
 	while (i < data->philo_count)
 	{
-		if (pthread_join(philo[i].thread, &ret))
+		if (pthread_join(philo[i].thread, NULL))
 			return (1);
 		pthread_mutex_destroy(&philo[i].m_dead_clock);
 		i++;
