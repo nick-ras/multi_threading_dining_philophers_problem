@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:09:46 by nick              #+#    #+#             */
-/*   Updated: 2023/01/12 14:34:51 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/12 19:55:17 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,22 @@ int	create_threads(t_data *data, t_philos *philo)
 	return (0);
 }
 
+void	usleep_function(long long target)
+{
+	long long start;
+	long long temp;
+
+	start = get_time();
+	while ((temp = get_time()) < start + target)
+	{
+		//printf("usleep = %lld\n", (start + target - temp) / 2);
+		usleep((start + target - temp) / 2);
+	}
+}
+
 void	*routine(void *philo)
 {
 	t_philos	*ph;
-
 	ph = (t_philos *)philo;
 	update_last_meal(ph);
 	if (ph->data->philo_count > 1)
@@ -44,13 +56,13 @@ void	*routine(void *philo)
 			{
 				print_message(philo, "is eating");
 				update_last_meal(ph);
-				usleep(ph->data->time_to_eat * 1000);
+				usleep_function(ph->data->time_to_eat);
 				unlock_philo(philo);
 				if (ph->data->eat_total > 0)
 					if (update_eating(ph))
 						return (NULL);
 				print_message(philo, "is sleeping");
-				usleep(ph->data->time_to_sleep * 1000);
+				usleep_function(ph->data->time_to_sleep);
 				print_message(philo, "is thinking");
 			}
 		}
@@ -74,7 +86,7 @@ void	*check_death(void	*philos)
 				return (NULL);
 		if (i >= (ph[0].data->philo_count) - 1)
 			i = -1;
-		usleep(100);
+		usleep(200);
 	}
 	return (NULL);
 }
@@ -88,7 +100,6 @@ void	*check_done_eating(void	*philo)
 	{
 		if (clock_started(ph))
 		{
-			printf("CLock started\n");
 			while (1)
 			{
 				if(check_dead_var(philo))
@@ -106,7 +117,7 @@ void	*check_done_eating(void	*philo)
 					return (NULL);
 				}
 				pthread_mutex_unlock(&ph->data->m_living);
-				usleep(100);
+				usleep(600);
 			}
 		}
 	}
