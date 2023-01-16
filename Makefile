@@ -6,7 +6,7 @@
 #    By: nick <nick@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/12 10:21:39 by nickras           #+#    #+#              #
-#    Updated: 2023/01/12 21:29:00 by nick             ###   ########.fr        #
+#    Updated: 2023/01/15 13:34:00 by nick             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ LIBFTPRINTF_A	= $(LIBFTPRINTF_PATH)/libftprintf.a
 MAKE = make
 CC = gcc
 RM = rm -rf
-CFLAG = -Wall -Werror -Wextra -fsanitize=thread
+CFLAG = -Wall -Werror -Wextra #-fsanitize=thread
 SRC_DIR = 	./src/
 OBJ_DIR =   ./obj/
 
