@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:14:24 by nick              #+#    #+#             */
-/*   Updated: 2023/01/17 15:48:59 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/17 16:26:58 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,37 +16,36 @@ int	init_mutex_and_philos(t_data *data, t_philos *philo)
 {
 	int	i;
 
-	i = 0;
-	init_mutex(data);
-	while (i < data->philo_count)
+	i = -1;
+	init_mutex(data, philo);
+	while (++i < data->philo_count)
 	{
 		philo[i].id = i;
 		philo[i].last_meal = 0;
-		pthread_mutex_init(&philo[i].data->m_check, NULL);
 		philo[i].data = data;
 		philo[i].eat_count = data->eat_total;
 		philo[i].lfork = &data->m_forks[i];
 		philo[i].rfork = &data->m_forks[(i + 1) % data->philo_count];
-		i++;
 	}
 	return (0);
 }
 
-int	init_mutex(t_data *data)
+int	init_mutex(t_data *data, t_philos *ph)
 {
 	int	i;
 
 	data->m_forks = ft_calloc((data->philo_count + 1), sizeof(pthread_mutex_t));
 	if (data->m_forks == NULL)
 		return (1);
-	i = 0;
-	while (i < data->philo_count)
+	i = -1;
+	while (++i < data->philo_count)
 	{
 		pthread_mutex_init(&data->m_forks[i], NULL);
-		i++;
+		pthread_mutex_init(&ph[i].m_sleep, NULL);
 	}
 	pthread_mutex_init(&data->m_dead, NULL);
 	pthread_mutex_init(&data->m_check, NULL);
+	pthread_mutex_init(&data->m_print, NULL);
 	return (0);
 }
 

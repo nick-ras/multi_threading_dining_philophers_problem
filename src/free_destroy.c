@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:16:43 by nick              #+#    #+#             */
-/*   Updated: 2023/01/17 15:48:00 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/17 16:31:53 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	free_destroy(t_data *data, t_philos *philo)
 	i = -1;
 	pthread_mutex_destroy(&data->m_dead);
 	pthread_mutex_destroy(&data->m_check);
+	pthread_mutex_destroy(&data->m_print);
 	while (++i < data->philo_count)
 		pthread_mutex_destroy(&data->m_forks[i]);
 	free(data->m_forks);
