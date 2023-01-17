@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:16:43 by nick              #+#    #+#             */
-/*   Updated: 2023/01/17 15:20:38 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/17 15:48:00 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	join_threads(t_data *data, t_philos *philo)
 	i = 0;
 	if (pthread_join(data->check_philo_dead, NULL))
 		return (1);
+		
 	if (data->eat_total > 0)
 	{
 		if (pthread_join(data->check_done_eating, NULL))
@@ -28,7 +29,6 @@ int	join_threads(t_data *data, t_philos *philo)
 	{
 		if (pthread_join(philo[i].thread, NULL))
 			return (1);
-		pthread_mutex_destroy(&philo[i].m_last_meal);
 		i++;
 	}
 	return (0);
@@ -38,14 +38,11 @@ int	free_destroy(t_data *data, t_philos *philo)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	pthread_mutex_destroy(&data->m_dead);
 	pthread_mutex_destroy(&data->m_check);
-	while (i < data->philo_count)
-	{
+	while (++i < data->philo_count)
 		pthread_mutex_destroy(&data->m_forks[i]);
-		i++;
-	}
 	free(data->m_forks);
 	free(philo);
 	free(data);

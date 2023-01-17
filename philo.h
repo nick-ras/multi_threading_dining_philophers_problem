@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2023/01/17 15:20:38 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/17 15:47:49 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ typedef struct s_data
 typedef struct s_philos
 {
 	pthread_t				thread;
-	pthread_mutex_t			m_last_meal;
 	int						id;
 	long long				last_meal;
 	int						eat_count;

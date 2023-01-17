@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:14:24 by nick              #+#    #+#             */
-/*   Updated: 2023/01/17 15:20:38 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/17 15:48:59 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	init_mutex_and_philos(t_data *data, t_philos *philo)
 	{
 		philo[i].id = i;
 		philo[i].last_meal = 0;
-		pthread_mutex_init(&philo[i].m_last_meal, NULL);
+		pthread_mutex_init(&philo[i].data->m_check, NULL);
 		philo[i].data = data;
 		philo[i].eat_count = data->eat_total;
 		philo[i].lfork = &data->m_forks[i];
