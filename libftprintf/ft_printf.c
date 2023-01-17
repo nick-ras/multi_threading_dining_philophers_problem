@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 15:55:54 by nickras           #+#    #+#             */
-/*   Updated: 2022/11/29 13:19:32 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/17 15:17:47 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	handler(const char *s, int i, va_list args)
 		length += handle_string(va_arg(args, char *));
 	else if (s[i] == 'd' || s[i] == 'i')
 		length += handle_decimal(va_arg(args, int));
+	else if (s[i] == 'l' || s[i] == 'i')
+		length += handle_long_long(va_arg(args, long long));
 	else if (s[i] == 'u')
 		length += ft_uitoa(va_arg(args, unsigned int));
 	else if (s[i] == 'x')

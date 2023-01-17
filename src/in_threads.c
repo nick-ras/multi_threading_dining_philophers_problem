@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:09:46 by nick              #+#    #+#             */
-/*   Updated: 2023/01/12 21:43:20 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/17 15:20:38 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,14 +94,14 @@ void	*check_done_eating(void	*philo)
 			{
 				if (check_dead_var(philo))
 					return (NULL);
-				pthread_mutex_lock(&ph->data->m_living);
+				pthread_mutex_lock(&ph->data->m_check);
 				if (ph->data->philo_living < 1)
 				{
 					set_dead_var(ph);
-					pthread_mutex_unlock(&ph->data->m_living);
+					pthread_mutex_unlock(&ph->data->m_check);
 					return (NULL);
 				}
-				pthread_mutex_unlock(&ph->data->m_living);
+				pthread_mutex_unlock(&ph->data->m_check);
 				usleep(600);
 			}
 		}

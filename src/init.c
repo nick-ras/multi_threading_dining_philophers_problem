@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:14:24 by nick              #+#    #+#             */
-/*   Updated: 2023/01/12 21:42:47 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/17 15:20:38 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	init_mutex(t_data *data)
 		i++;
 	}
 	pthread_mutex_init(&data->m_dead, NULL);
-	pthread_mutex_init(&data->m_living, NULL);
+	pthread_mutex_init(&data->m_check, NULL);
 	return (0);
 }
 

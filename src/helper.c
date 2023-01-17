@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:16:48 by nick              #+#    #+#             */
-/*   Updated: 2023/01/12 21:21:50 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/17 15:26:32 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ int	print_message(t_philos *ph, char *msg)
 {
 	if (check_dead_var(ph))
 		return (1);
-	printf("%lld %d %s\n", get_time(), ph->id, msg);
+	pthread_mutex_lock(&ph->data->m_check);
+	ft_printf("%l %d %s\n", get_time() - ph->last_meal, ph->id, msg);
+	pthread_mutex_unlock(&ph->data->m_check);
 	return (0);
 }
 

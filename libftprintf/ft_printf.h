@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 13:20:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/05/31 18:36:43 by nickras          ###   ########.fr       */
+/*   Updated: 2023/01/17 15:18:04 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ int	ft_hexa(unsigned int n);
 int	longhexa(unsigned long n);
 int	ft_hexaul(unsigned long n);
 int	ft_hexau(unsigned int n);
+long long	handle_long_long(long long i);
 
 #endif

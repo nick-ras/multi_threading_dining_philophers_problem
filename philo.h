@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2023/01/12 21:29:54 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/17 15:20:38 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 typedef struct s_data
 {
 	pthread_mutex_t	m_dead;
-	pthread_mutex_t	m_living;
+	pthread_mutex_t	m_check;
 	pthread_mutex_t	*m_forks;
 	pthread_t		check_philo_dead;
 	pthread_t		check_done_eating;
