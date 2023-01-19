@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:09:46 by nick              #+#    #+#             */
-/*   Updated: 2023/01/17 16:32:17 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/19 22:48:58 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int	do_routine(t_philos *ph)
 	unlock_philo(ph);
 	if (ph->data->eat_total > 0)
 		if (update_eating(ph))
-			return (1);
+			while(!check_dead_var(ph))
+				usleep(2000);
 	print_message(ph, "is sleeping");
 	usleep_function(ph->data->time_to_sleep);
 	print_message(ph, "is thinking");
@@ -68,10 +69,15 @@ void	*check_death(void	*philos)
 	i = -1;
 	while (1)
 	{
-		if (clock_started(&ph[++i]))
+		if (clock_started(&ph[++i])) //maybe iterate all philos
+		{
 			if (time_ran_out(ph[i]))
 				return (NULL);
-		if (i >= (ph[0].data->philo_count) - 1)
+			if (ph->data->eat_total > 0)
+				if (all_done_eating(ph[i]))
+					return (NULL);
+		}
+		if (i >= ph[0].data->philo_count - 1)
 			i = -1;
 		usleep(200);
 	}
@@ -81,30 +87,30 @@ void	*check_death(void	*philos)
 // if (check_dead_var(philo))
 // 	return (NULL);
 // ft_printf("All done eating\n"); //DELETE
-void	*check_done_eating(void	*philo)
-{
-	t_philos		*ph;
+// void	*check_done_eating(void	*philo)
+// {
+// 	t_philos		*ph;
 
-	ph = (t_philos *)philo;
-	while (1)
-	{
-		if (clock_started(ph))
-		{
-			while (1)
-			{
-				if (check_dead_var(philo))
-					return (NULL);
-				pthread_mutex_lock(&ph->data->m_check);
-				if (ph->data->philo_living < 1)
-				{
-					set_dead_var(ph);
-					pthread_mutex_unlock(&ph->data->m_check);
-					return (NULL);
-				}
-				pthread_mutex_unlock(&ph->data->m_check);
-				usleep(600);
-			}
-		}
-	}
-	return (NULL);
-}
+// 	ph = (t_philos *)philo;
+// 	while (1)
+// 	{
+// 		if (clock_started(ph))
+// 		{
+// 			while (1)
+// 			{
+// 				if (check_dead_var(philo))
+// 					return (NULL);
+// 				pthread_mutex_lock(&ph->data->m_check);
+// 				if (ph->data->philo_living < 1)
+// 				{
+// 					set_dead_var(ph);
+// 					pthread_mutex_unlock(&ph->data->m_check);
+// 					return (NULL);
+// 				}
+// 				pthread_mutex_unlock(&ph->data->m_check);
+// 				usleep(1000);
+// 			}
+// 		}
+// 	}
+// 	return (NULL);
+// }

@@ -6,7 +6,7 @@
 #    By: nick <nick@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/12 10:21:39 by nickras           #+#    #+#              #
-#    Updated: 2023/01/17 15:43:03 by nick             ###   ########.fr        #
+#    Updated: 2023/01/19 22:55:28 by nick             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ CFLAG = -Wall -Werror -Wextra -pthread #-fsanitize=thread
 SRC_DIR = 	./src/
 OBJ_DIR =   ./obj/
 
-SRC_FILES = free_destroy.c in_threads.c \
+SRC_FILES = in_threads.c \
 init.c main.c helper.c helper2.c helper3.c \
 
 OBJ_FILES = ${SRC_FILES:.c=.o}

@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2023/01/17 16:31:44 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/19 22:53:28 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,7 @@ int			clock_started(t_philos *ph);
 int			update_last_meal(t_philos *ph);
 int			update_eating(t_philos *ph);
 int			time_ran_out(t_philos ph);
-int			check_eat(t_philos ph);
-int			all_done_eating(t_philos *ph);
+int			all_done_eating(t_philos ph);
 int			do_routine(t_philos *ph);
 void		set_dead_var(t_philos *ph);
 void		usleep_function(long long target);
@@ -82,5 +81,4 @@ void		*routine(void *philo);
 void		*check_death(void	*philo);
 void		*check_done_eating(void	*philo);
 int			create_threads(t_data *data, t_philos *philo);
-int			join_threads(t_data *data, t_philos *philo);
 #endif

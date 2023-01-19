@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:16:48 by nick              #+#    #+#             */
-/*   Updated: 2023/01/17 16:18:59 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/19 22:21:24 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,6 @@ int	print_message(t_philos *ph, char *msg)
 
 int	lock_philo(t_philos *philo)
 {
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
 	if (philo->id % 2 == 1)
 	{
 		pthread_mutex_lock(philo->lfork);
@@ -66,7 +63,7 @@ int	unlock_philo(t_philos *philo)
 	return (0);
 }
 
-//printf("id %d dead var = %d\n", philo->id, philo->data->dead);
+//return 1 if dead -------printf("id %d dead var = %d\n", philo->id, philo->data->dead);
 int	check_dead_var(t_philos *philo)
 {
 	pthread_mutex_lock(&philo->data->m_dead);

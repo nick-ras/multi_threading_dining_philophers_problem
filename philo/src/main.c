@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:14:36 by nick              #+#    #+#             */
-/*   Updated: 2023/01/17 15:56:10 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/19 22:53:41 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ int	main(int argc, char **argv)
 	if (init_mutex_and_philos(data, philo))
 		return (1);
 	if (create_threads(data, philo))
-		return (1);
-	if (join_threads(data, philo))
 		return (1);
 	if (free_destroy(data, philo))
 		return (1);
