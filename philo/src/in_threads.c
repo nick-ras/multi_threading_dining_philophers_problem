@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:09:46 by nick              #+#    #+#             */
-/*   Updated: 2023/01/19 23:08:24 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/19 23:15:14 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	one_philo(t_philos *ph)
 
 int	do_routine(t_philos *ph)
 {
-	update_last_meal(ph);
 	print_message(ph, "is eating");
+	update_last_meal(ph);
 	usleep_function(ph->data->time_to_eat);
 	unlock_philo(ph);
 	if (ph->data->eat_total > 0)
@@ -77,7 +77,7 @@ void	*check_death(void	*philos)
 				if (all_done_eating(ph[i]))
 					return (NULL);
 		}
-		if (i >= ph[0].data->philo_count - 1)
+		if (i == ph[0].data->philo_count - 1)
 			i = -1;
 		usleep(200);
 	}
