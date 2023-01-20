@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:16:48 by nick              #+#    #+#             */
-/*   Updated: 2023/01/19 23:04:57 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/20 09:16:17 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,27 +33,26 @@ int	print_message(t_philos *ph, char *msg)
 
 int	lock_philo(t_philos *philo)
 {
-	if (philo->id % 2 == 1)
+	if (philo->data->philo_count == 1)
+	{
+		pthread_mutex_lock(philo->rfork);
+		print_message(philo, "has taken a fork");
+	}
+	else if (philo->id % 2 == 1)
 	{
 		pthread_mutex_lock(philo->lfork);
 		print_message(philo, "has taken a fork");
-		if (philo->data->philo_count > 1)
-		{
-			pthread_mutex_lock(philo->rfork);
-			print_message(philo, "has taken a fork");
-		}
+		pthread_mutex_lock(philo->rfork);
+		print_message(philo, "has taken a fork");
 	}
 	else if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(philo->rfork);
 		print_message(philo, "has taken a fork");
-		if (philo->data->philo_count > 1)
-		{
-			pthread_mutex_lock(philo->lfork);
-			print_message(philo, "has taken a fork");
-		}
+		pthread_mutex_lock(philo->lfork);
+		print_message(philo, "has taken a fork");
 	}
-	return (1);
+	return (0);
 }
 
 int	unlock_philo(t_philos *philo)

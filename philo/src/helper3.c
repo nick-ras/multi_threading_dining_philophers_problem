@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 21:17:23 by nick              #+#    #+#             */
-/*   Updated: 2023/01/19 23:05:46 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/20 09:57:42 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,5 @@ void	usleep_function(long long target)
 
 	start = get_time();
 	while (get_time() < start + target)
-		usleep(100);
-		// usleep((start + target - get_time()) / 2);
+		usleep(((start + target - get_time()) * 1000) / 2);
 }

@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:14:24 by nick              #+#    #+#             */
-/*   Updated: 2023/01/19 22:55:11 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/20 09:09:03 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ int	create_threads(t_data *data, t_philos *philo)
 	while (++i < data->philo_count)
 		if (pthread_create(&philo[i].thread, NULL, &routine, &philo[i]))
 			return (1);
-	i = -1;
 	if (pthread_join(data->check_philo_dead, NULL))
 		return (1);
+	i = -1;
 	while (++i < data->philo_count)
 		if (pthread_join(philo[i].thread, NULL))
 			return (1);
