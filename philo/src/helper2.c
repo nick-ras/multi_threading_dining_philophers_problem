@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:17:10 by nick              #+#    #+#             */
-/*   Updated: 2023/01/20 09:49:12 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/20 10:59:57 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	update_eating(t_philos *ph)
 	{
 		ph->data->philo_living--;
 		pthread_mutex_unlock(&ph->data->m_check);
-		while(!check_dead_var(ph))
+		while (!check_dead_var(ph))
 		{
 			update_last_meal(ph);
 			usleep(30000);
@@ -52,7 +52,6 @@ int	update_eating(t_philos *ph)
 	pthread_mutex_unlock(&ph->data->m_check);
 	return (0);
 }
-
 
 //printf("            check_death() results: %lld id %d\n",ph.last_meal 
 //- get_time() + ph.data->time_to_die, ph.id);
@@ -64,7 +63,7 @@ int	time_ran_out(t_philos ph)
 		set_dead_var(&ph);
 		pthread_mutex_lock(&ph.data->m_print);
 		ft_printf("%l %d %s\n", get_time() - ph.last_meal, ph.id, "died");
-		// pthread_mutex_unlock(&ph.data->m_print);
+		pthread_mutex_unlock(&ph.data->m_print);
 		pthread_mutex_unlock(&ph.data->m_check);
 		return (1);
 	}

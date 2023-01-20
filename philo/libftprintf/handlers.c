@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 14:40:30 by nickras           #+#    #+#             */
-/*   Updated: 2023/01/17 15:15:43 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/20 11:00:49 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	handle_decimal(int i)
 
 long long	handle_long_long(long long i)
 {
-	int		length;
+	int			length;
 	long long	newint;
 
 	newint = (long long)i;
@@ -67,7 +67,6 @@ long long	handle_long_long(long long i)
 	length += handle_char(newint);
 	return (length);
 }
-
 
 //writes unsigned integer to stdout by convering integer to ascii value
 int	ft_uitoa(unsigned int n)

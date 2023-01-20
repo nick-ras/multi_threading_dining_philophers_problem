@@ -6,12 +6,11 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:09:46 by nick              #+#    #+#             */
-/*   Updated: 2023/01/20 10:27:12 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/20 10:59:45 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
-
 
 int	do_routine(t_philos *ph)
 {
@@ -64,7 +63,7 @@ void	*check_death(void	*philos)
 	i = -1;
 	while (1)
 	{
-		if (clock_started(&ph[++i])) //maybe iterate all philos
+		if (clock_started(&ph[++i]))
 		{
 			if (time_ran_out(ph[i]))
 				return (NULL);

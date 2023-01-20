@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2023/01/20 08:36:48 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/20 11:00:19 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_philos
 //init
 int			init_mutex_and_philos(t_data *data, t_philos *philo);
 long long	get_time(void);
-int	init_mutex(t_data *data, t_philos *ph);
+int			init_mutex(t_data *data, t_philos *ph);
 
 //free_destroy
 int			free_destroy(t_data *data, t_philos *philo);

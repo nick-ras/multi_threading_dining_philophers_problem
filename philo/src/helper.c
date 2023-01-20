@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:16:48 by nick              #+#    #+#             */
-/*   Updated: 2023/01/20 09:16:17 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/20 10:59:27 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ int	unlock_philo(t_philos *philo)
 	return (0);
 }
 
-//return 1 if dead -------printf("id %d dead var = %d\n", philo->id, philo->data->dead);
+//return 1 if dead -------printf("id %d dead var = %d\n", 
+//philo->id, philo->data->dead);
 int	check_dead_var(t_philos *philo)
 {
 	pthread_mutex_lock(&philo->data->m_dead);
