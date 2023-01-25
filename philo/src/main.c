@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:14:36 by nick              #+#    #+#             */
-/*   Updated: 2023/01/20 09:03:39 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/25 13:27:45 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ int	main(int argc, char **argv)
 	if (data == NULL)
 		return (1);
 	if (init_data(data, argv))
+	{
+		free(data);
 		return (1);
+	}
 	philo = ft_calloc((data->philo_count + 1), sizeof(t_philos));
 	if (philo == NULL)
 		return (1);

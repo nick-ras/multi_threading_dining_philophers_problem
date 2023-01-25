@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 20:43:09 by nickras           #+#    #+#             */
-/*   Updated: 2022/05/24 16:05:51 by nickras          ###   ########.fr       */
+/*   Updated: 2023/01/25 12:27:18 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//My own implementation of the C library function 
+//My own implementation of the C library function
+
+int	loop_atoi(const char *str, int count, int sign, long int number)
+{
+	number = 0;
+	while (str[count] != '\0' && str[count] <= '9' && str[count] >= '0')
+	{
+		if (number > 2147483648 && sign == -1)
+			return (0);
+		if (number > 2147483647 && sign == 1)
+			return (-1);
+		number = number * 10 + (str[count] - '0');
+		count++;
+	}
+	if (str[count] != 0)
+		return (0);
+	return (number);
+}
+
 int	ft_atoi(const char *str)
 {
 	int			sign;
@@ -27,16 +45,7 @@ int	ft_atoi(const char *str)
 				sign = -1;
 		count++;
 	}
-	number = 0;
-	while (str[count] != '\0' && str[count] <= '9' && str[count] >= '0')
-	{
-		if (number > 2147483648 && sign == -1)
-			return (0);
-		if (number > 2147483647 && sign == 1)
-			return (-1);
-		number = number * 10 + (str[count] - '0');
-		count++;
-	}
+	number = loop_atoi(str, count, sign, number);
 	return (sign * number);
 }
 

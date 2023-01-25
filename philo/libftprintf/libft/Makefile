@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nickras <nickras@student.42.fr>            +#+  +:+       +#+         #
+#    By: nick <nick@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/09 12:52:06 by nickras           #+#    #+#              #
-#    Updated: 2022/05/27 12:57:05 by nickras          ###   ########.fr        #
+#    Updated: 2023/01/25 12:28:22 by nick             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,12 +29,12 @@ OBJS =      $(SRC:.c=.o)
 OBJSBONUS =      $(SRCBONUS:.c=.o) $(OBJS)
 
 $(NAMELIB): $(OBJS)
-	ar rcs $(NAMELIB) $(OBJS)
+	@ar rcs $(NAMELIB) $(OBJS)
 	
 all: $(NAMELIB)
  
 bonus: $(OBJSBONUS)
-	ar rcs $(NAMELIB) $(OBJSBONUS)
+	@ar rcs $(NAMELIB) $(OBJSBONUS)
 	
 clean:
 	$(RM) $(OBJSBONUS)
@@ -44,7 +44,7 @@ fclean: clean
 
 # if object file doesnt exist, or soruce file has changed, (refers to) two different files
 %.o: %.c
-	$(CC) -c $^ $(CFLAGS)  -o $@
+	@$(CC) -c $^ $(CFLAGS)  -o $@
 
 #remmeber to add  "libft.so" to clean
 #so:

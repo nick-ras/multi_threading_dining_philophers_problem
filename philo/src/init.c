@@ -6,7 +6,7 @@
 /*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:14:24 by nick              #+#    #+#             */
-/*   Updated: 2023/01/20 11:58:18 by nick             ###   ########.fr       */
+/*   Updated: 2023/01/25 13:18:00 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int	create_threads(t_data *data, t_philos *philo)
 			return (1);
 		usleep(2000);
 	}
+	usleep(2000);
 	if (pthread_join(data->check_philo_dead, NULL))
 		return (1);
 	i = -1;

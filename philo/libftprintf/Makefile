@@ -6,7 +6,7 @@
 #    By: nick <nick@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/09 12:52:06 by nickras           #+#    #+#              #
-#    Updated: 2023/01/11 12:21:01 by nick             ###   ########.fr        #
+#    Updated: 2023/01/25 12:27:56 by nick             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,25 +26,25 @@ RM = rm -rf
 #If objeft doesnt exist, it will create one
 OBJS =      $(SRC:.c=.o)												
 $(NAMELIB): $(LIBFT) $(OBJS)
-	cp	$(LIBFT) $(NAMELIB)
-	ar rcs $(NAMELIB) $(OBJS)
+	@cp	$(LIBFT) $(NAMELIB)
+	@ar rcs $(NAMELIB) $(OBJS)
 
 $(LIBFT):
-	make -C $(LIBFT_PATH) all
+	@make -C $(LIBFT_PATH) all
 
 all: $(NAMELIB)
 	
 clean:
-	make -C $(LIBFT_PATH) clean
-	$(RM) $(OBJS)
+	@make -C $(LIBFT_PATH) clean
+	@$(RM) $(OBJS)
 
 fclean: clean
-	make -C $(LIBFT_PATH) fclean
-	$(RM) $(NAMELIB)
+	@make -C $(LIBFT_PATH) fclean
+	@$(RM) $(NAMELIB)
 
 # if object file doesnt exist, or soruce file has changed, (refers to) two different files
 %.o: %.c
-	$(CC) $(FLAGS) -c $^  -o $@
+	@$(CC) $(FLAGS) -c $^  -o $@
 
 re: fclean all
 
