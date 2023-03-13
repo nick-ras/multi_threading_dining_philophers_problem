@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   helper2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:17:10 by nick              #+#    #+#             */
-/*   Updated: 2023/01/25 13:23:30 by nick             ###   ########.fr       */
+/*   Updated: 2023/03/13 16:23:00 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-//ft_printf("phil %d timeleft %ld\n", ph->id, ph->last_meal - get_time());
+
+/* check when philo ate last time which is stores in last_meal
+*/
 int	clock_started(t_philos *ph)
 {
 	pthread_mutex_lock(&ph->data->m_check);
@@ -25,7 +27,8 @@ int	clock_started(t_philos *ph)
 	return (0);
 }
 
-// ft_printf("phil %d clock updated og set %ld\n", ph->id, ph->last_meal);
+/* updates time since last meal when thread starts or every time philophers starts eating again
+*/
 int	update_last_meal(t_philos *ph)
 {
 	pthread_mutex_lock(&ph->data->m_check);
@@ -34,13 +37,15 @@ int	update_last_meal(t_philos *ph)
 	return (0);
 }
 
+/* decrements eat_count variable. If philo ate enough, then it decrements philo_still_eating, to keep track of how manye are still eating
+*/
 int	update_eating(t_philos *ph)
 {
 	pthread_mutex_lock(&ph->data->m_check);
 	ph->eat_count--;
 	if (ph->eat_count == 0)
 	{
-		ph->data->philo_living--;
+		ph->data->philo_still_eating--;
 		pthread_mutex_unlock(&ph->data->m_check);
 		while (!check_dead_var(ph))
 		{
@@ -53,8 +58,8 @@ int	update_eating(t_philos *ph)
 	return (0);
 }
 
-//printf("            check_death() results: %lld id %d\n",ph.last_meal 
-//- get_time() + ph.data->time_to_die, ph.id);
+/* checks if philo is dead. If so, it sets the dead variable to 1, and prints the message
+*/
 int	time_ran_out(t_philos ph)
 {
 	pthread_mutex_lock(&ph.data->m_check);
@@ -71,10 +76,12 @@ int	time_ran_out(t_philos ph)
 	return (0);
 }
 
+/* if all are done eating then it sets dead_var
+*/
 int	all_done_eating(t_philos ph)
 {
 	pthread_mutex_lock(&ph.data->m_check);
-	if (ph.data->philo_living < 1)
+	if (ph.data->philo_still_eating < 1)
 	{
 		set_dead_var(&ph);
 		pthread_mutex_unlock(&ph.data->m_check);

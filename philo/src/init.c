@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:14:24 by nick              #+#    #+#             */
-/*   Updated: 2023/01/25 13:18:00 by nick             ###   ########.fr       */
+/*   Updated: 2023/03/13 16:19:17 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
+/* initiate philosopher threads and calls init_mutex
+*/
 int	init_mutex_and_philos(t_data *data, t_philos *philo)
 {
 	int	i;
@@ -30,6 +32,8 @@ int	init_mutex_and_philos(t_data *data, t_philos *philo)
 	return (0);
 }
 
+/* initiate mutexes and locks
+*/
 int	init_mutex(t_data *data, t_philos *ph)
 {
 	int	i;
@@ -49,13 +53,15 @@ int	init_mutex(t_data *data, t_philos *ph)
 	return (0);
 }
 
+/* initiate data struct with arguments
+*/
 int	init_data(t_data *data, char **argv)
 {
-	data->dead = 0;
+	data->stop_dinner = 0;
 	data->philo_count = ft_atoi(argv[1]);
 	if (1 > data->philo_count)
 		return (1);
-	data->philo_living = data->philo_count;
+	data->philo_still_eating = data->philo_count;
 	data->time_to_die = ft_atoi(argv[2]);
 	if (1 > data->time_to_die)
 		return (1);
@@ -76,6 +82,9 @@ int	init_data(t_data *data, char **argv)
 	return (0);
 }
 
+/* initiate threads and joins them. Also calls the routine function for each
+ thread
+*/
 int	create_threads(t_data *data, t_philos *philo)
 {
 	int	i;
@@ -99,6 +108,8 @@ int	create_threads(t_data *data, t_philos *philo)
 	return (0);
 }
 
+/* frees all allocated memory and destroys mutexes
+*/
 int	free_destroy(t_data *data, t_philos *philo)
 {
 	int	i;

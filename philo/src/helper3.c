@@ -3,23 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   helper3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 21:17:23 by nick              #+#    #+#             */
-/*   Updated: 2023/01/25 13:23:20 by nick             ###   ########.fr       */
+/*   Updated: 2023/03/13 16:19:17 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
+// sets the dead variable to 1 if dead, so other threads can see it
 void	set_dead_var(t_philos *ph)
 {
 	pthread_mutex_lock(&ph->data->m_dead);
-	ph->data->dead = 1;
+	ph->data->stop_dinner = 1;
 	pthread_mutex_unlock(&ph->data->m_dead);
 }
 
-//printf("usleep = %lld\n", (start + target - temp) / 2);
+/* paused the thread for the amount of time specified in the argument. Since usleep is not precise i had to use a while loop to a more precise time.
+*/
 void	usleep_function(long long target)
 {
 	long long	start;
@@ -29,6 +31,8 @@ void	usleep_function(long long target)
 		usleep(((start + target - get_time()) * 1000) / 2);
 }
 
+/* returns the current time in milliseconds
+*/
 long long	get_time(void)
 {
 	struct timeval	time;

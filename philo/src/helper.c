@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:16:48 by nick              #+#    #+#             */
-/*   Updated: 2023/01/25 14:00:34 by nick             ###   ########.fr       */
+/*   Updated: 2023/03/13 16:25:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-//ph->last_meal - get_time() + ph->data->time_to_die
+/* handles all printing and makes program safe to use with -helgrind flag of valgrind
+*/
 int	print_message(t_philos *ph, char *msg)
 {
 	if (check_dead_var(ph))
@@ -23,6 +24,8 @@ int	print_message(t_philos *ph, char *msg)
 	return (0);
 }
 
+/* special algoritms when only 3 philos are present
+*/
 void	three_philos(t_philos *philo)
 {
 	if (philo->id == 0)
@@ -34,6 +37,8 @@ void	three_philos(t_philos *philo)
 	}
 }
 
+/* locks the forks
+*/
 int	lock_philo(t_philos *philo)
 {
 	if (philo->data->philo_count == 3)
@@ -61,6 +66,9 @@ int	lock_philo(t_philos *philo)
 	return (0);
 }
 
+/* unlocks the forks
+*/
+*/
 int	unlock_philo(t_philos *philo)
 {
 	pthread_mutex_unlock(philo->lfork);
@@ -68,10 +76,12 @@ int	unlock_philo(t_philos *philo)
 	return (0);
 }
 
+/* checks if the dinner is over either because all philos ate or one died
+*/
 int	check_dead_var(t_philos *philo)
 {
 	pthread_mutex_lock(&philo->data->m_dead);
-	if (philo->data->dead)
+	if (philo->data->stop_dinner)
 	{
 		pthread_mutex_unlock(&philo->data->m_dead);
 		return (1);

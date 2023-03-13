@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   in_threads.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:09:46 by nick              #+#    #+#             */
-/*   Updated: 2023/01/20 10:59:45 by nick             ###   ########.fr       */
+/*   Updated: 2023/03/13 16:10:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
+/* updates the eateing and sleeping and thinking
+*/
 int	do_routine(t_philos *ph)
 {
 	print_message(ph, "is eating");
@@ -27,6 +29,8 @@ int	do_routine(t_philos *ph)
 	return (0);
 }
 
+/* runs the routine for each philosopher, and calls do_routine
+*/
 void	*routine(void *philo)
 {
 	t_philos	*ph;
@@ -54,6 +58,8 @@ void	*routine(void *philo)
 	return (NULL);
 }
 
+/* checks if the time has run out for each philosopher
+*/
 void	*check_death(void	*philos)
 {
 	int				i;

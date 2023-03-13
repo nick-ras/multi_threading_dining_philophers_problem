@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 19:49:01 by nick              #+#    #+#             */
-/*   Updated: 2023/01/25 13:19:56 by nick             ###   ########.fr       */
+/*   Updated: 2023/03/13 16:21:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ typedef struct s_data
 	pthread_t		check_philo_dead;
 	pthread_t		check_done_eating;
 	int				philo_count;
-	int				philo_living;
+	int				philo_still_eating;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				eat_total;
-	int				dead;
+	int				stop_dinner;
 }	t_data;
 
 typedef struct s_philos

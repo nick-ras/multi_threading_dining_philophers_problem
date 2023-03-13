@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nick <nick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:14:36 by nick              #+#    #+#             */
-/*   Updated: 2023/01/25 13:27:45 by nick             ###   ########.fr       */
+/*   Updated: 2023/03/13 16:21:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 // clear && make re && valgrind -v --leak-check=yes ./philo 2 1000 50 50
 #include "../philo.h"
 
+/* check if the number of arguments is correct
+*/
 int	check_argc(int argc)
 {
 	if (argc < 5 || 6 < argc)
